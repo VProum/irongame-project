@@ -4,43 +4,50 @@ console.log("js loaded");
 
 
 //declaration of variables && eventlistener
-let htmlCards = document.querySelectorAll(".card"); //select all cards
-htmlCards.forEach(card => card.onclick = cardClickHandler);
+let htmlCards = document.querySelectorAll(".card");
+//htmlCards.forEach(card => card.onclick = cardClickHandler);
+
+const htmlBoard = document.getElementById("board");
+
+let htmlPlayer = document.querySelectorAll(".hand");
 
 const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
 const restartBtn = document.getElementById("restart-btn");
-shuffleBtn.onclick = shuffleBtnClickHandler;
-resetBtn.onclick = resetBtnClickHandler;
-restartBtn.onclick = () => document.location.reload(true);
 
 let board = new Board();
+let nbplayer = 4;
 
 
 //iife for initialisation of the board ?
 let init = (function() {
 
-    for (let i = 0; i < 4; i++) {
+    //adding html players
+    for (let i = 0; i < nbplayer; i++) {
+        htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand">
+        </div>`;
+    }
+
+    //calculating number of card required and pushing them to the array
+    board.cards.push(new Card(2));
+    for (let i = 0; i < nbplayer; i++) {
+        board.cards.push(new Card(1));
+    }
+    for (let i = 0; i < nbplayer * 4 - 1; i++) {
         board.cards.push(new Card(0));
     }
-    var bombcard = new Card(2);
-    board.cards.push(bombcard);
+
+    board.remainingCards = board.cards;
+    board.shuffleCards();
+
+    //adding card to the hand of players (fixed to 5 cards)
+    giveCards(5);
 
 
-    for (let i = 0; i < 4; i++) {
-        board.cards.push(new Card(0));
-    }
-    var bombcard = new Card(2);
-    board.cards.push(bombcard);
-
-    //steps for initialising : 1 add neutral card, 2 add wire, 3 add bomb, 4 shuffle!
-
-    //diplay html (create a function to create html element)
-    let htmlPlayer2 = document.getElementById("player2");
-    for (let card of board.cards) {
-        createHtmlCard(card, htmlPlayer2);
-        console.log(card);
-    }
+    shuffleBtn.onclick = shuffleBtnClickHandler;
+    resetBtn.onclick = resetBtnClickHandler;
+    restartBtn.onclick = () => document.location.reload(true);
+    htmlCards.forEach(card => card.onclick = cardClickHandler); // add eventlistener
 
 })();
 
@@ -51,21 +58,18 @@ let init = (function() {
 
 //Html class manipulation
 function createHtmlCard(card, targetparent) {
-    targetparent.innerHTML += `<div class="card neutral recto">
-    A
-</div>`;
+    targetparent.innerHTML += `<div class="card neutral recto"> A </div>`;
     setHtmlCard(card, targetparent.lastChild);
     htmlCards = document.querySelectorAll(".card"); //update the array of card
-    htmlCards.forEach(card => card.onclick = cardClickHandler); // add eventlistener
+
 
 }
 
+//notes : no need to update classes states, it is handle within the click handler
 function setCardToRecto(htmlcard) {
     htmlcard.classList.add("recto");
-    console.log(board.cards[getIndexCards(htmlcard)]);
-    console.log(board.cards);
-    //important to think a bout this TT
-    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
+    console.log(board.remainingCards[getIndexCards(htmlcard)]);
+    console.log(board.remainingCards);
 }
 
 function setCardToNeutral(htmlcard) {
@@ -73,7 +77,6 @@ function setCardToNeutral(htmlcard) {
     htmlcard.classList.add("neutral");
     htmlcard.classList.remove("bomb");
     htmlcard.classList.remove("wire");
-    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function setCardToBomb(htmlcard) {
@@ -81,7 +84,6 @@ function setCardToBomb(htmlcard) {
     htmlcard.classList.remove("neutral");
     htmlcard.classList.add("bomb");
     htmlcard.classList.remove("wire");
-    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function setCardToWire(htmlcard) {
@@ -89,7 +91,6 @@ function setCardToWire(htmlcard) {
     htmlcard.classList.remove("neutral");
     htmlcard.classList.remove("bomb");
     htmlcard.classList.add("wire");
-    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function flipCard(event) {
@@ -99,7 +100,7 @@ function flipCard(event) {
 
     setTimeout(() => {
         event.target.classList.toggle("recto");
-        board.cards[getIndexCards(event.target)].isReturned = !board.cards[getIndexCards(event.target)].isReturned;
+        board.remainingCards[getIndexCards(event.target)].isReturned = !board.remainingCards[getIndexCards(event.target)].isReturned;
     }, 350);
 
     setTimeout(() => event.target.classList.remove("flip-card"), 450);
@@ -126,9 +127,8 @@ function setCard(htmlcard, card) {
     card.isReturned = !htmlcard.classList.contains("recto");
 }
 
-//compare === with array of div, or add custom properties
+//compare === with array of div to get index
 function getIndexCards(card) {
-
     let index = 0;
     for (let htmlcard of htmlCards) {
         if (!(htmlcard === card)) {
@@ -142,7 +142,22 @@ function getIndexCards(card) {
     return -1;
 }
 
+//function to distribute card to the players
+function giveCards(handsize) {
+    htmlPlayer = document.querySelectorAll(".hand");
+    //htmlPlayer.forEach(player => player.innerHTML = "");
 
+    console.log(htmlPlayer);
+
+    let j = 0; //index of remainingcards
+    htmlPlayer.forEach(player => {
+        for (let i = 0; i < handsize; i++) {
+            createHtmlCard(board.remainingCards[j], player);
+            console.log(j);
+            j++;
+        }
+    });
+}
 
 
 
@@ -150,9 +165,9 @@ function getIndexCards(card) {
 //handlers
 function cardClickHandler(event) {
     flipCard(event); //animation for card flip and adding css class
-    setCard(event.target, board.cards[getIndexCards(event.target)]);
+    setCard(event.target, board.remainingCards[getIndexCards(event.target)]);
     console.log(getIndexCards(event.target));
-    console.log(board.cards);
+    //console.log(board.cards);
 }
 
 function shuffleBtnClickHandler() {
@@ -162,7 +177,7 @@ function shuffleBtnClickHandler() {
     board.shuffleCards();
 
     htmlCards.forEach(htmlcard => {
-        setHtmlCard(board.cards[index], htmlcard);
+        setHtmlCard(board.remainingCards[index], htmlcard);
         index++;
         //animation
         htmlcard.classList.add("refresh");
@@ -181,4 +196,10 @@ function resetBtnClickHandler() {
         card.classList.remove("flip-card");
         setTimeout(() => card.classList.remove("refresh"), 1000)
     });
+
+    //update classes state 
+    board.cards.forEach(card => card.isReturned = false);
+    board.remainingCards = board.cards;
+    board.usedCards = [];
+    board.shuffleCards();
 }

@@ -13,7 +13,11 @@
 }
 
 .neutral {
-    background: no-repeat center/95% url(./images/frontcard.png);
+    background: no-repeat center/95% url(./images/neutralcard.png);
+}
+
+.wire {
+    background: no-repeat center/95% url(./images/wirecard.jpg);
 }
 
 .bomb {

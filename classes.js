@@ -28,14 +28,13 @@ export class Board {
     shuffleCards() {
         let shuffledcards = [];
 
-        var length = this.cards.length; //creation of variable is mandatory to fixe the size of the boucle for
+        var length = this.remainingCards.length; //creation of variable is mandatory to fixe the size of the boucle for
         for (let i = 0; i < length; i++) {
-            console.log(this.cards.length)
-            let j = randomInt(this.cards.length);
-            shuffledcards.push(this.cards[j]);
-            this.cards.splice(j, 1);
+            let j = randomInt(this.remainingCards.length);
+            shuffledcards.push(this.remainingCards[j]);
+            this.remainingCards.splice(j, 1);
         }
-        this.cards = shuffledcards;
+        this.remainingCards = shuffledcards;
     }
 
 
