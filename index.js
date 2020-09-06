@@ -58,8 +58,6 @@ function init() {
     //adding card to the hand of players (fixed to 5 cards)
     giveCards(5);
 
-    htmlCards.forEach(card => card.onclick = cardClickHandler); // add eventlistener
-
     //animations
     htmlCards.forEach(card => {
         setCardToRecto(card);
@@ -122,8 +120,8 @@ function flipCard(event) {
     //add sound!!!!!
 
     setTimeout(() => {
-        event.target.classList.toggle("recto");
         board.remainingCards[getIndexCards(event.target)].isReturned = !board.remainingCards[getIndexCards(event.target)].isReturned;
+        event.target.classList.toggle("recto");
     }, 350);
 
     setTimeout(() => event.target.classList.remove("flip-card"), 450);
@@ -168,7 +166,7 @@ function getIndexCards(card) {
 //function to distribute card to the players
 function giveCards(handsize) {
     htmlPlayer = document.querySelectorAll(".hand");
-    //htmlPlayer.forEach(player => player.innerHTML = "");
+    htmlPlayer.forEach(player => player.innerHTML = "");
 
     //console.log(htmlPlayer);
 
@@ -179,6 +177,8 @@ function giveCards(handsize) {
             j++;
         }
     });
+
+    htmlCards.forEach(card => card.onclick = cardClickHandler);
 }
 
 //function to display status of the board
@@ -209,12 +209,16 @@ function cardClickHandler(event) {
 
     board.endTurn();
 
-
+    console.log(getIndexCards(event.target));
     //new round
     if (board.turn === 0) { //new round, shuffle remaining card and distribute
         board.round++;
-
-        board.remainingCards = board.remainingCards.filter(card => !card.isReturned);
+        //remove return card from remaining cards
+        setTimeout(() => { //careful, status is updated after 350 ms....
+            board.remainingCards = board.remainingCards.filter(card => !card.isReturned);
+            board.shuffleCards();
+            giveCards(5 - board.round);
+        }, 500); // we have to wait for the status to update before filterring
 
     }
 
@@ -222,7 +226,7 @@ function cardClickHandler(event) {
     displayStatus();
 
 
-    console.log(getIndexCards(event.target));
+
     console.log(board);
 }
 
