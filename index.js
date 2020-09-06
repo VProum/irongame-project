@@ -12,6 +12,7 @@ const htmlRound = document.getElementById("round");
 const htmlTurn = document.getElementById("turn");
 const htmlUsedCards = document.getElementById("used-cards");
 const htmlGameOver = document.getElementById("game-over");
+const htmlCurrentPlayer = document.getElementById("current-player");
 
 let htmlPlayer = document.querySelectorAll(".hand");
 let htmlPlayerInfos = document.querySelectorAll(".infos");
@@ -49,6 +50,7 @@ function init() {
         //htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand"></div>`;
     }
     htmlPlayerInfos = document.querySelectorAll(".infos");
+    htmlCurrentPlayer.innerText = board.players[0].name;
 
     //calculating number of card required and pushing them to the array
     board.cards.push(new Card(2));
@@ -220,6 +222,10 @@ function cardClickHandler(event) {
     event.target.removeEventListener("click", cardClickHandler);
 
     board.endTurn();
+
+    //define new current player
+    console.log(board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(event.target)])));
+    htmlCurrentPlayer.innerHTML = board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(event.target)]))[0].name;
 
     console.log(getIndexCards(event.target));
     //new round
