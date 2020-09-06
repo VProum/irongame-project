@@ -1,5 +1,14 @@
-.hand {
+.horizontal-container {
     display: flex;
+}
+
+#board-status {
+    width: 40%;
+}
+
+#used-cards {
+    display: flex;
+    align-items: stretch;
 }
 
 .card {

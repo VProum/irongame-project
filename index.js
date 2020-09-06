@@ -1,4 +1,4 @@
-import { Board, Card } from "./classes.js"
+import { Board, Card, Player } from "./classes.js"
 
 console.log("js loaded");
 
@@ -8,6 +8,9 @@ let htmlCards = document.querySelectorAll(".card");
 //htmlCards.forEach(card => card.onclick = cardClickHandler);
 
 const htmlBoard = document.getElementById("board");
+const htmlRound = document.getElementById("round");
+const htmlTurn = document.getElementById("turn");
+const htmlUsedCards = document.getElementById("used-cards");
 
 let htmlPlayer = document.querySelectorAll(".hand");
 
@@ -19,12 +22,14 @@ shuffleBtn.onclick = shuffleBtnClickHandler;
 resetBtn.onclick = resetBtnClickHandler;
 restartBtn.onclick = () => document.location.reload(true);
 
-let board = new Board();
+let board;
 let nbplayer = 4;
 
 
 //iife for initialisation of the board ?
-let init = (function() {
+function init() {
+    board = new Board();
+    htmlBoard.innerHTML = "";
 
     //adding html players
     for (let i = 0; i < nbplayer; i++) {
@@ -33,6 +38,9 @@ let init = (function() {
         div.classList.add("hand");
         htmlBoard.appendChild(div);
         //htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand"></div>`;
+
+        //adding players to board
+        board.players.push(new Player(`player ${i}`));
     }
 
     //calculating number of card required and pushing them to the array
@@ -52,7 +60,15 @@ let init = (function() {
 
     htmlCards.forEach(card => card.onclick = cardClickHandler); // add eventlistener
 
-})();
+    //animations
+    htmlCards.forEach(card => {
+        setCardToRecto(card);
+        card.classList.add("refresh");
+        card.classList.remove("flip-card");
+        setTimeout(() => card.classList.remove("refresh"), 1000)
+    });
+}
+init();
 
 
 
@@ -60,6 +76,7 @@ let init = (function() {
 
 
 //Html class manipulation
+
 function createHtmlCard(card, targetparent) {
     const div = document.createElement("div");
     div.classList.add("card");
@@ -69,8 +86,6 @@ function createHtmlCard(card, targetparent) {
     //targetparent.innerHTML += `<div class="card neutral recto"> A </div>`;
     setHtmlCard(card, targetparent.lastChild);
     htmlCards = document.querySelectorAll(".card"); //update the array of card
-
-
 }
 
 //notes : no need to update classes states, it is handle within the click handler
@@ -155,7 +170,7 @@ function giveCards(handsize) {
     htmlPlayer = document.querySelectorAll(".hand");
     //htmlPlayer.forEach(player => player.innerHTML = "");
 
-    console.log(htmlPlayer);
+    //console.log(htmlPlayer);
 
     let j = 0; //index of remainingcards
     htmlPlayer.forEach(player => {
@@ -166,6 +181,17 @@ function giveCards(handsize) {
     });
 }
 
+//function to display status of the board
+function displayStatus() {
+    htmlRound.innerText = board.round + 1;
+    htmlTurn.innerText = board.turn + 1;
+
+    //display remaining cards
+    setTimeout(() => {
+        htmlUsedCards.innerHTML = "";
+        board.usedCards.forEach(card => createHtmlCard(card, htmlUsedCards));
+    }, 355);
+}
 
 
 
@@ -173,8 +199,31 @@ function giveCards(handsize) {
 function cardClickHandler(event) {
     flipCard(event); //animation for card flip and adding css class
     setCard(event.target, board.remainingCards[getIndexCards(event.target)]);
+
+    board.usedCards.push(board.remainingCards[getIndexCards(event.target)]);
+    board.usedCards = [...new Set(board.usedCards)]; //dont add if the card is already there
+    //board.remainingCards.splice(getIndexCards(event.target), 1); //issue, if we remove the array, the click dont work on the last cards
+
+    //not working?
+    event.target.removeEventListener("click", cardClickHandler);
+
+    board.endTurn();
+
+
+    //new round
+    if (board.turn === 0) { //new round, shuffle remaining card and distribute
+        board.round++;
+
+        board.remainingCards = board.remainingCards.filter(card => !card.isReturned);
+
+    }
+
+
+    displayStatus();
+
+
     console.log(getIndexCards(event.target));
-    //console.log(board.cards);
+    console.log(board);
 }
 
 function shuffleBtnClickHandler() {
@@ -197,17 +246,5 @@ function shuffleBtnClickHandler() {
 function resetBtnClickHandler() {
     console.log("reset click");
     //set all card to recto and show refresh animation
-
-    htmlCards.forEach(card => {
-        setCardToRecto(card);
-        card.classList.add("refresh");
-        card.classList.remove("flip-card");
-        setTimeout(() => card.classList.remove("refresh"), 1000)
-    });
-
-    //update classes state 
-    board.cards.forEach(card => card.isReturned = false);
-    board.remainingCards = board.cards;
-    board.usedCards = [];
-    board.shuffleCards();
+    init();
 }

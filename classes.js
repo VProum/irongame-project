@@ -37,6 +37,13 @@ export class Board {
         this.remainingCards = shuffledcards;
     }
 
+    endTurn() {
+        return this.turn = this.usedCards.length % this.players.length;
+    }
+
+    endRound() {
+        return this.round++;
+    }
 
 
 }
