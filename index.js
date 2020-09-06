@@ -4,7 +4,7 @@ console.log("js loaded");
 
 
 //declaration of variables && eventlistener
-const htmlCards = document.querySelectorAll(".card"); //select all cards
+let htmlCards = document.querySelectorAll(".card"); //select all cards
 htmlCards.forEach(card => card.onclick = cardClickHandler);
 
 const shuffleBtn = document.getElementById("shuffle-btn");
@@ -17,8 +17,15 @@ restartBtn.onclick = () => document.location.reload(true);
 let board = new Board();
 
 
-//iife for initialisation of the board
+//iife for initialisation of the board ?
 let init = (function() {
+
+    for (let i = 0; i < 4; i++) {
+        board.cards.push(new Card(0));
+    }
+    var bombcard = new Card(2);
+    board.cards.push(bombcard);
+
 
     for (let i = 0; i < 4; i++) {
         board.cards.push(new Card(0));
@@ -29,6 +36,11 @@ let init = (function() {
     //steps for initialising : 1 add neutral card, 2 add wire, 3 add bomb, 4 shuffle!
 
     //diplay html (create a function to create html element)
+    let htmlPlayer2 = document.getElementById("player2");
+    for (let card of board.cards) {
+        createHtmlCard(card, htmlPlayer2);
+        console.log(card);
+    }
 
 })();
 
@@ -39,14 +51,21 @@ let init = (function() {
 
 //Html class manipulation
 function createHtmlCard(card, targetparent) {
-    targetparent.innerHTML += ``;
+    targetparent.innerHTML += `<div class="card neutral recto">
+    A
+</div>`;
     setHtmlCard(card, targetparent.lastChild);
-}
+    htmlCards = document.querySelectorAll(".card"); //update the array of card
+    htmlCards.forEach(card => card.onclick = cardClickHandler); // add eventlistener
 
+}
 
 function setCardToRecto(htmlcard) {
     htmlcard.classList.add("recto");
-    setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
+    console.log(board.cards[getIndexCards(htmlcard)]);
+    console.log(board.cards);
+    //important to think a bout this TT
+    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function setCardToNeutral(htmlcard) {
@@ -84,8 +103,7 @@ function flipCard(event) {
     }, 350);
 
     setTimeout(() => event.target.classList.remove("flip-card"), 450);
-};
-
+}
 
 //find a more generic way?
 function setHtmlCard(card, htmlcard) {
@@ -97,10 +115,8 @@ function setHtmlCard(card, htmlcard) {
     } else {
         setCardToNeutral(htmlcard);
     }
-    console.log("titi");
     if (!card.isReturned) {
         setCardToRecto(htmlcard);
-        console.log("toto");
     }
 
 
@@ -110,17 +126,20 @@ function setCard(htmlcard, card) {
     card.isReturned = !htmlcard.classList.contains("recto");
 }
 
-
 //compare === with array of div, or add custom properties
 function getIndexCards(card) {
+
     let index = 0;
     for (let htmlcard of htmlCards) {
         if (!(htmlcard === card)) {
             index++;
         } else if ((htmlcard === card)) {
+            console.log("index of card is : ", index);
             return index;
         }
     }
+    console.log("card is not found");
+    return -1;
 }
 
 
@@ -134,7 +153,7 @@ function cardClickHandler(event) {
     setCard(event.target, board.cards[getIndexCards(event.target)]);
     console.log(getIndexCards(event.target));
     console.log(board.cards);
-};
+}
 
 function shuffleBtnClickHandler() {
     console.log("shuffle click");
