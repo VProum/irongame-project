@@ -28,7 +28,7 @@ let init = (function() {
 
     //steps for initialising : 1 add neutral card, 2 add wire, 3 add bomb, 4 shuffle!
 
-
+    //diplay html (create a function to create html element)
 
 })();
 
@@ -38,8 +38,15 @@ let init = (function() {
 
 
 //Html class manipulation
+function createHtmlCard(card, targetparent) {
+    targetparent.innerHTML += ``;
+    setHtmlCard(card, targetparent.lastChild);
+}
+
+
 function setCardToRecto(htmlcard) {
     htmlcard.classList.add("recto");
+    setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function setCardToNeutral(htmlcard) {
@@ -47,6 +54,7 @@ function setCardToNeutral(htmlcard) {
     htmlcard.classList.add("neutral");
     htmlcard.classList.remove("bomb");
     htmlcard.classList.remove("wire");
+    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function setCardToBomb(htmlcard) {
@@ -54,6 +62,7 @@ function setCardToBomb(htmlcard) {
     htmlcard.classList.remove("neutral");
     htmlcard.classList.add("bomb");
     htmlcard.classList.remove("wire");
+    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function setCardToWire(htmlcard) {
@@ -61,18 +70,24 @@ function setCardToWire(htmlcard) {
     htmlcard.classList.remove("neutral");
     htmlcard.classList.remove("bomb");
     htmlcard.classList.add("wire");
+    //setCard(htmlcard, board.cards[getIndexCards(htmlcard)]); //update js objects classes
 }
 
 function flipCard(event) {
     event.target.classList.add("flip-card");
 
+    //add sound!!!!!
+
     setTimeout(() => {
         event.target.classList.toggle("recto");
+        board.cards[getIndexCards(event.target)].isReturned = !board.cards[getIndexCards(event.target)].isReturned;
     }, 350);
 
     setTimeout(() => event.target.classList.remove("flip-card"), 450);
 };
 
+
+//find a more generic way?
 function setHtmlCard(card, htmlcard) {
     //add classes
     if (card.isBomb) {
@@ -82,16 +97,17 @@ function setHtmlCard(card, htmlcard) {
     } else {
         setCardToNeutral(htmlcard);
     }
-
+    console.log("titi");
     if (!card.isReturned) {
         setCardToRecto(htmlcard);
+        console.log("toto");
     }
 
 
 }
 
 function setCard(htmlcard, card) {
-    card.isReturned = htmlcard.classList.contains("recto");
+    card.isReturned = !htmlcard.classList.contains("recto");
 }
 
 
@@ -116,6 +132,7 @@ function getIndexCards(card) {
 function cardClickHandler(event) {
     flipCard(event); //animation for card flip and adding css class
     setCard(event.target, board.cards[getIndexCards(event.target)]);
+    console.log(getIndexCards(event.target));
     console.log(board.cards);
 };
 

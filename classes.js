@@ -18,15 +18,17 @@ export class Board {
     constructor() {
         this.players = [];
         this.cards = [];
+        this.usedCards = [];
+        this.remainingCards = [];
         this.activeplayer = {};
         this.round = 0;
-        this.cuts = 0;
+        this.turn = 0;
     }
 
     shuffleCards() {
         let shuffledcards = [];
 
-        var length = this.cards.length; //this is mandatory to fixe the size of the boucle for
+        var length = this.cards.length; //creation of variable is mandatory to fixe the size of the boucle for
         for (let i = 0; i < length; i++) {
             console.log(this.cards.length)
             let j = randomInt(this.cards.length);
