@@ -15,6 +15,10 @@ const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
 const restartBtn = document.getElementById("restart-btn");
 
+shuffleBtn.onclick = shuffleBtnClickHandler;
+resetBtn.onclick = resetBtnClickHandler;
+restartBtn.onclick = () => document.location.reload(true);
+
 let board = new Board();
 let nbplayer = 4;
 
@@ -24,8 +28,11 @@ let init = (function() {
 
     //adding html players
     for (let i = 0; i < nbplayer; i++) {
-        htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand">
-        </div>`;
+        const div = document.createElement("div");
+        div.classList.add("horizontal-container");
+        div.classList.add("hand");
+        htmlBoard.appendChild(div);
+        //htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand"></div>`;
     }
 
     //calculating number of card required and pushing them to the array
@@ -43,10 +50,6 @@ let init = (function() {
     //adding card to the hand of players (fixed to 5 cards)
     giveCards(5);
 
-
-    shuffleBtn.onclick = shuffleBtnClickHandler;
-    resetBtn.onclick = resetBtnClickHandler;
-    restartBtn.onclick = () => document.location.reload(true);
     htmlCards.forEach(card => card.onclick = cardClickHandler); // add eventlistener
 
 })();
@@ -58,7 +61,12 @@ let init = (function() {
 
 //Html class manipulation
 function createHtmlCard(card, targetparent) {
-    targetparent.innerHTML += `<div class="card neutral recto"> A </div>`;
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.classList.add("neutral");
+    div.classList.add("recto");
+    targetparent.appendChild(div);
+    //targetparent.innerHTML += `<div class="card neutral recto"> A </div>`;
     setHtmlCard(card, targetparent.lastChild);
     htmlCards = document.querySelectorAll(".card"); //update the array of card
 
@@ -68,8 +76,8 @@ function createHtmlCard(card, targetparent) {
 //notes : no need to update classes states, it is handle within the click handler
 function setCardToRecto(htmlcard) {
     htmlcard.classList.add("recto");
-    console.log(board.remainingCards[getIndexCards(htmlcard)]);
-    console.log(board.remainingCards);
+    //console.log(board.remainingCards[getIndexCards(htmlcard)]);
+    //console.log(board.remainingCards);
 }
 
 function setCardToNeutral(htmlcard) {
@@ -134,7 +142,7 @@ function getIndexCards(card) {
         if (!(htmlcard === card)) {
             index++;
         } else if ((htmlcard === card)) {
-            console.log("index of card is : ", index);
+            //console.log("index of card is : ", index);
             return index;
         }
     }
@@ -153,7 +161,6 @@ function giveCards(handsize) {
     htmlPlayer.forEach(player => {
         for (let i = 0; i < handsize; i++) {
             createHtmlCard(board.remainingCards[j], player);
-            console.log(j);
             j++;
         }
     });
@@ -190,6 +197,7 @@ function shuffleBtnClickHandler() {
 function resetBtnClickHandler() {
     console.log("reset click");
     //set all card to recto and show refresh animation
+
     htmlCards.forEach(card => {
         setCardToRecto(card);
         card.classList.add("refresh");
