@@ -45,7 +45,11 @@ export class Board {
         return this.round++;
     }
 
-
+    isGameOver() {
+        return this.usedCards.filter(card => card.isBomb).length === 1 ||
+            this.usedCards.filter(card => card.isWire).length === this.players.length ||
+            this.round === 4
+    }
 }
 
 

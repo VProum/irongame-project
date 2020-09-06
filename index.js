@@ -11,8 +11,10 @@ const htmlBoard = document.getElementById("board");
 const htmlRound = document.getElementById("round");
 const htmlTurn = document.getElementById("turn");
 const htmlUsedCards = document.getElementById("used-cards");
+const htmlGameOver = document.getElementById("game-over");
 
 let htmlPlayer = document.querySelectorAll(".hand");
+let htmlPlayerInfos = document.querySelectorAll(".infos");
 
 const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
@@ -31,17 +33,22 @@ function init() {
     board = new Board();
     htmlBoard.innerHTML = "";
 
-    //adding html players
+    //adding html players and hand
     for (let i = 0; i < nbplayer; i++) {
+        //adding players to board
+        board.players.push(new Player(`Player ${i}`));
+        const h2 = document.createElement("h2");
+        h2.classList.add("infos");
+        h2.innerText = board.players[i].name;
+        htmlBoard.appendChild(h2);
+
         const div = document.createElement("div");
         div.classList.add("horizontal-container");
         div.classList.add("hand");
         htmlBoard.appendChild(div);
         //htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand"></div>`;
-
-        //adding players to board
-        board.players.push(new Player(`player ${i}`));
     }
+    htmlPlayerInfos = document.querySelectorAll(".infos");
 
     //calculating number of card required and pushing them to the array
     board.cards.push(new Card(2));
@@ -61,16 +68,10 @@ function init() {
     //animations
     htmlCards.forEach(card => {
         setCardToRecto(card);
-        card.classList.add("refresh");
         card.classList.remove("flip-card");
-        setTimeout(() => card.classList.remove("refresh"), 1000)
     });
 }
 init();
-
-
-
-
 
 
 //Html class manipulation
@@ -171,12 +172,21 @@ function giveCards(handsize) {
     //console.log(htmlPlayer);
 
     let j = 0; //index of remainingcards
+    let k = 0; //index of board.players
     htmlPlayer.forEach(player => {
+        board.players[k].hand = []; //reset player hand
+        htmlPlayerInfos[k].innerText = ""; //reset player infos
+
         for (let i = 0; i < handsize; i++) {
             createHtmlCard(board.remainingCards[j], player);
+            board.players[k].hand.push(board.remainingCards[j]);
             j++;
         }
+        htmlPlayerInfos[k].innerText = `${board.players[k].name} => Number of wire : ${board.players[k].hand.filter(card => card.isWire).length} - Bomb ? ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES!" : "NO!"}`;
+        k++;
     });
+
+
 
     htmlCards.forEach(card => card.onclick = cardClickHandler);
 }
@@ -186,10 +196,12 @@ function displayStatus() {
     htmlRound.innerText = board.round + 1;
     htmlTurn.innerText = board.turn + 1;
 
-    //display remaining cards
+
+    //display remaining cards (we have to wait for the animation to finish to complete)
     setTimeout(() => {
         htmlUsedCards.innerHTML = "";
         board.usedCards.forEach(card => createHtmlCard(card, htmlUsedCards));
+        htmlGameOver.innerText = board.isGameOver();
     }, 355);
 }
 
@@ -224,9 +236,6 @@ function cardClickHandler(event) {
 
 
     displayStatus();
-
-
-
     console.log(board);
 }
 
@@ -240,10 +249,9 @@ function shuffleBtnClickHandler() {
         setHtmlCard(board.remainingCards[index], htmlcard);
         index++;
         //animation
-        htmlcard.classList.add("refresh");
+        htmlcard.classList.add("wobble");
         htmlcard.classList.remove("flip-card");
-        setTimeout(() => htmlcard.classList.remove("refresh"), 1000);
-
+        setTimeout(() => htmlcard.classList.remove("wobble"), 800);
     });
 }
 

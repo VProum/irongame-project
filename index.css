@@ -35,6 +35,7 @@
 
 .recto {
     background: no-repeat center/95% url(./images/backcard.png);
+    animation: refresh 0.6s ease-out both;
 }
 
 
@@ -56,8 +57,8 @@
     animation: flip-card 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 }
 
-.refresh {
-    animation: refresh 0.6s ease-out both;
+.wobble {
+    animation: wobble 0.8s both;
 }
 
 @keyframes flip-card {
@@ -79,5 +80,28 @@
     100% {
         transform: rotate(0) scale(1);
         opacity: 1;
+    }
+}
+
+@keyframes wobble {
+    0%,
+    100% {
+        transform: translateX(0%);
+        transform-origin: 50% 50%;
+    }
+    15% {
+        transform: translateX(-30px) rotate(-6deg);
+    }
+    30% {
+        transform: translateX(15px) rotate(6deg);
+    }
+    45% {
+        transform: translateX(-15px) rotate(-3.6deg);
+    }
+    60% {
+        transform: translateX(9px) rotate(2.4deg);
+    }
+    75% {
+        transform: translateX(-6px) rotate(-1.2deg);
     }
 }
