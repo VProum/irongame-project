@@ -26,7 +26,7 @@ resetBtn.onclick = resetBtnClickHandler;
 restartBtn.onclick = () => document.location.reload(true);
 
 let board;
-let nbplayer = 4;
+let nbplayer = 5;
 
 
 //iife for initialisation of the board ?
@@ -53,12 +53,12 @@ function init() {
     htmlCurrentPlayer.innerText = board.players[0].name;
 
     //calculating number of card required and pushing them to the array
-    board.cards.push(new Card(2));
+    board.cards.push(new Card("bomb"));
     for (let i = 0; i < nbplayer; i++) {
-        board.cards.push(new Card(1));
+        board.cards.push(new Card("wire"));
     }
     for (let i = 0; i < nbplayer * 4 - 1; i++) {
-        board.cards.push(new Card(0));
+        board.cards.push(new Card("neutral"));
     }
 
     board.remainingCards = board.cards;
@@ -224,7 +224,6 @@ function cardClickHandler(event) {
     board.endTurn();
 
     //define new current player
-    console.log(board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(event.target)])));
     htmlCurrentPlayer.innerHTML = board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(event.target)]))[0].name;
 
     console.log(getIndexCards(event.target));

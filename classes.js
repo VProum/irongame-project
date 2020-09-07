@@ -1,8 +1,8 @@
 export class Card {
-    constructor(i) {
+    constructor(str) {
         this.isReturned = false;
-        this.isBomb = i === 2;
-        this.isWire = i === 1;
+        this.isBomb = str === "bomb";
+        this.isWire = str === "wire";
     }
 }
 
