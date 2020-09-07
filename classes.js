@@ -7,9 +7,9 @@ export class Card {
 }
 
 export class Player {
-    constructor(name) {
+    constructor(name, role) {
         this.name = name;
-        this.isBlue = true;
+        this.isBlue = role; //role is a boolean
         this.hand = [];
     }
 }
@@ -35,6 +35,18 @@ export class Board {
             this.remainingCards.splice(j, 1);
         }
         this.remainingCards = shuffledcards;
+    }
+
+    shuffle(array) {
+        let shuffled = [];
+
+        var length = array.length; //creation of variable is mandatory to fixe the size of the boucle for
+        for (let i = 0; i < length; i++) {
+            let j = randomInt(array.length);
+            shuffled.push(array[j]);
+            array.splice(j, 1);
+        }
+        return shuffled;
     }
 
     endTurn() {

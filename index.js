@@ -4,8 +4,6 @@ console.log("js loaded");
 
 
 //declaration of variables && eventlistener
-let htmlCards = document.querySelectorAll(".card");
-//htmlCards.forEach(card => card.onclick = cardClickHandler);
 
 const htmlBoard = document.getElementById("board");
 const htmlRound = document.getElementById("round");
@@ -16,6 +14,8 @@ const htmlCurrentPlayer = document.getElementById("current-player");
 
 let htmlPlayer = document.querySelectorAll(".hand");
 let htmlPlayerInfos = document.querySelectorAll(".infos");
+let htmlCards = document.querySelectorAll(".card");
+let htmlRoles = document.querySelectorAll(".card-role")
 
 const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
@@ -27,6 +27,7 @@ restartBtn.onclick = () => document.location.reload(true);
 
 let board;
 let nbplayer = 5;
+let rolescard = [true, true, true, false, false]; //3 blue, 2 red
 
 
 //iife for initialisation of the board ?
@@ -34,10 +35,18 @@ function init() {
     board = new Board();
     htmlBoard.innerHTML = "";
 
+    //init rolecard (depends on number of players)
+    if (nbplayer === 6) {
+        let rolescard = [true, true, true, true, false, false]; //4 blue, 2 red
+    } else if (nbplayer > 6) {
+        let rolescard = [true, true, true, true, true, false, false, false]; //5 blue, 3 red
+    }
+    rolescard = board.shuffle(rolescard);
+
     //adding html players and hand
     for (let i = 0; i < nbplayer; i++) {
         //adding players to board
-        board.players.push(new Player(`Player ${i}`));
+        board.players.push(new Player(`Player ${i}`, rolescard[i]));
         const h2 = document.createElement("h2");
         h2.classList.add("infos");
         h2.innerText = board.players[i].name;
@@ -72,6 +81,8 @@ function init() {
         setCardToRecto(card);
         card.classList.remove("flip-card");
     });
+
+    console.log(board);
 }
 init();
 
@@ -166,6 +177,19 @@ function getIndexCards(card) {
     return -1;
 }
 
+//function to distribute role to the players
+function createHtmlRoles(index, rolearray, targetparent) {
+    const div = document.createElement("div");
+    div.classList.add("card-role");
+    //div.classList.add("recto-role");
+    // add according role to element
+    rolearray[index] ? div.classList.add("blue-role") : div.classList.add("red-role");
+    console.log(div);
+    console.log(targetparent)
+    targetparent.appendChild(div);
+    htmlRoles = document.querySelectorAll(".card-role"); //update the array of card
+}
+
 //function to distribute card to the players
 function giveCards(handsize) {
     htmlPlayer = document.querySelectorAll(".hand");
@@ -175,7 +199,9 @@ function giveCards(handsize) {
 
     let j = 0; //index of remainingcards
     let k = 0; //index of board.players
+
     htmlPlayer.forEach(player => {
+        createHtmlRoles(k, rolescard, player);
         board.players[k].hand = []; //reset player hand
         htmlPlayerInfos[k].innerText = ""; //reset player infos
 

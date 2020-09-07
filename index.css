@@ -46,6 +46,20 @@ body {
     border: 5px solid red;
 }
 
+.red-role {
+    width: 120px;
+    height: 180px;
+    margin-right: 30px;
+    background: no-repeat center/95% url(./images/red-team.jpg);
+}
+
+.blue-role {
+    width: 120px;
+    height: 180px;
+    margin-right: 30px;
+    background: no-repeat center/95% url(./images/blue-team.jpg);
+}
+
 .neutral {
     background: no-repeat center/95% url(./images/neutralcard.png);
 }
