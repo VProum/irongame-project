@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>my first widget</title>
+    <link rel="stylesheet" href="index.css" />
+    <script type="module" src="index.js"></script>
+</head>
+
+<body>
+    <div class="horizontal-container buttons">
+        <button id="shuffle-btn"> Shuffle </button>
+        <button id="reset-btn"> Reset </button>
+        <button id="restart-btn"> Restart </button>
+    </div>
+    <div class="horizontal-container">
+        <div id="board"></div>
+        <div id="board-status">
+            <h1>Round <span id="round">0</span> // Turn <span id="turn">1</span></h1>
+            <h1>Current player : <span id="current-player">toto</span></h1>
+            <h1>Game Over ? <span id="game-over">false</span></h1>
+            <div id="used-cards"></div>
+        </div>
+    </div>
+</body>
