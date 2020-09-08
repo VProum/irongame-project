@@ -58,9 +58,10 @@ export class Board {
     }
 
     isGameOver() {
-        return this.usedCards.filter(card => card.isBomb).length === 1 ||
-            this.usedCards.filter(card => card.isWire).length === this.players.length ||
-            this.round === 4
+        if (this.usedCards.filter(card => card.isBomb).length === 1) return -1;
+        else if (this.usedCards.filter(card => card.isWire).length === this.players.length ||
+            this.round === 4) return 1;
+        else return 0;
     }
 }
 

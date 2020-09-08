@@ -16,38 +16,92 @@
             <h1>Welcome To London Time Bomb !</h1>
         </div>
     </header>
-    <section id="main-section">
+    <section id="main-page">
         <section class="lore">
             <p>Moriarty has planted a bomb that he plans to detonate in the heart of Big Ben, while Sherlock rushes to defuse it. At the start of the game, you will secretly discover which team, Moriarty’s or Sherlock’s, you belong to and will try to identify
                 your teammates without being unmasked by your adversaries.</p>
             <p>Each turn, you will choose a wire – displayed in front of another player – to cut, attempting to detonate or defuse the bomb according to which team you belong.</p>
-            <p><span class="sherlock">Sherlock's team wins the game if they defuse the bomb,</span><br/><span class="moriarty"> while Moriarty’s team wins if they detonate the bomb and destroy Big Ben.</span></p>
+            <p><span class="sherlock">Sherlock's team wins the game if they defuse the bomb,</span><br /><span class="moriarty"> while Moriarty’s team wins if they detonate the bomb and destroy Big Ben.</span>
+            </p>
         </section>
-
         <section>
             <div class="main-menu">
-                <div>
-                    <img class="img-tutorial" src="./images/tutorial.jpg" />
+                <div id="tutorial">
+                    <img src="./images/tutorial.png" />
                     <p>Tutorial</p>
                 </div>
-                <div>
-                    <img class="img-singleplayer" src="./images/singleplayer.png" />
+                <div id="singleplayer">
+                    <img src="./images/singleplayer.png" />
                     <p>Single Player</p>
                 </div>
-                <div>
-                    <img class="img-multiplayer" src="./images/multiplayer.jpg" />
+                <div id="multiplayer">
+                    <img src="./images/multi.png" />
                     <p>Multi Player</p>
                 </div>
             </div>
         </section>
     </section>
 
+    <section id="solo-option-page" class="hidden">
+        <section>
+            <div id="singleplayer">
+                <img src="./images/singleplayer.png" />
+                <p>Single Player</p>
+            </div>
+        </section>
+        <section>
+            <div class="main-menu">
+                <div id="tutorial">
+                    <img src="./images/tutorial.png" />
+                    <p>Easy</p>
+                </div>
+                <div id="singleplayer">
+                    <img src="./images/singleplayer.png" />
+                    <p>Normal</p>
+                </div>
+                <div id="multiplayer">
+                    <img src="./images/multi.png" />
+                    <p>Impossible</p>
+                </div>
+            </div>
+        </section>
+    </section>
+    <section id="tutorial1-page" class="hidden"></section>
+    <section id="some-page" class="hidden"></section>
+    <section id="some-page" class="hidden"></section>
+    <section id="multi-option-page" class="hidden"></section>
+
+    <section id="game-page" class="hidden">
+        <div class="horizontal-container buttons">
+            <button id="shuffle-btn"> Shuffle </button>
+            <button id="reset-btn"> Reset </button>
+            <button id="restart-btn"> Restart </button>
+        </div>
+        <div class="horizontal-container">
+            <div id="board"></div>
+            <div id="board-status">
+                <h1>Round <span id="round">0</span> // Turn <span id="turn">1</span></h1>
+                <h1>Current player : <span id="current-player">toto</span></h1>
+                <h1>Game Over ? <span id="game-over">false</span></h1>
+                <div id="used-cards"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="win-popup" class="popup hidden">
+        <span id="win-msg">Sherlock's Team Win! </span>
+        <button id="close-win" class="close">Restart</button>
+    </div>
+    <div id="lose-popup" class="popup hidden">
+        <span id="lose-msg">Moriarty's Team Win!</span>
+        <button id="close-lose" class="close">Restart</button>
+    </div>
+
     <footer>
         <p>&copy; 2020 Ezion Games</p>
         <div>
             <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf">
                 <img class="img-rules" src="./images/rules.PNG" />
-
                 <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf">Official Rules</a>
         </div>
     </footer>
