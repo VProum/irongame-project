@@ -7,10 +7,12 @@ export class Card {
 }
 
 export class Player {
-    constructor(name, role) {
+    constructor(name, role, position, isIA) {
         this.name = name;
         this.isBlue = role; //role is a boolean
         this.hand = [];
+        this.isIA = isIA;
+        this.position = position;
     }
 }
 
@@ -20,6 +22,7 @@ export class Board {
         this.cards = [];
         this.usedCards = [];
         this.remainingCards = [];
+        this.turnCards = [];
         this.activeplayer = {};
         this.round = 0;
         this.turn = 0;
@@ -54,6 +57,7 @@ export class Board {
     }
 
     endRound() {
+        this.turnCards = [];
         return this.round++;
     }
 
@@ -63,6 +67,30 @@ export class Board {
             this.round === 4) return 1;
         else return 0;
     }
+
+    playEasy() {
+        console.log("position player", this.activeplayer.position);
+        let randomCard = randomInt(this.remainingCards.length);
+
+        while ((randomCard >= this.activeplayer.position * (5 - this.round) &&
+                randomCard < this.activeplayer.position * (6 - this.round)) ||
+            this.turnCards.includes(randomCard)) {
+            console.log("playeasy while", randomCard)
+            randomCard = randomInt(this.remainingCards.length);
+        }
+
+        this.turnCards.push(randomCard);
+        return randomCard;
+    }
+
+    playNormal() {
+
+    }
+
+    playHard() {
+
+    }
+
 }
 
 

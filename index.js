@@ -34,10 +34,14 @@ const htmlSoloClaim = document.getElementById("solo-claim");
 const htmlEasyDiv = document.getElementById("solo-easy");
 const htmlNormalDiv = document.getElementById("solo-normal");
 const htmlHardDiv = document.getElementById("solo-hard");
+const htmlSoloTxt = document.getElementById("option-txt");
 
 htmlEasyDiv.onclick = soloClkHandler;
 htmlNormalDiv.onclick = soloClkHandler;
 htmlHardDiv.onclick = soloClkHandler;
+htmlEasyDiv.onmouseover = easyOverHandler;
+htmlNormalDiv.onmouseover = normalOverHandler;
+htmlHardDiv.onmouseover = hardOverHandler;
 
 const htmlBoard = document.getElementById("board");
 const htmlRound = document.getElementById("round");
@@ -56,12 +60,12 @@ let htmlScissors = document.querySelectorAll(".card-scissor");
 const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
 const restartBtn = document.getElementById("restart-btn");
-const clearBtn = document.getElementById("clear-btn");
+const returnBtn = document.getElementById("return-btn");
 
 shuffleBtn.onclick = shuffleBtnClickHandler;
 resetBtn.onclick = resetBtnClickHandler;
 restartBtn.onclick = () => document.location.reload(true);
-//clearBtn.onclick = boardClear;
+returnBtn.onclick = returnHandler;
 
 let board;
 let nbplayer = 7;
@@ -70,42 +74,57 @@ let playerNames = [];
 
 //#endregion
 
-//#region handlers
-function cardClickHandler(event) {
-    flipCard(event); //animation for card flip and adding css class
-    setCard(event.target, board.remainingCards[getIndexCards(event.target)]);
 
-    board.usedCards.push(board.remainingCards[getIndexCards(event.target)]);
+
+function returnCard(card) {
+    htmlCards = document.querySelectorAll(".card"); //update the card
+
+    flipCard(card);
+    setCard(card, board.remainingCards[getIndexCards(card)]);
+
+    board.usedCards.push(board.remainingCards[getIndexCards(card)]);
     board.usedCards = [...new Set(board.usedCards)]; //dont add if the card is already there
-    //board.remainingCards.splice(getIndexCards(event.target), 1); //issue, if we remove the array, the click dont work on the last cards
+    board.turnCards.push(getIndexCards(card));
 
-    //not working?
-    event.target.removeEventListener("click", cardClickHandler);
+    //define new current player
+    board.activeplayer = board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(card)]))[0];
+    htmlCurrentPlayer.innerHTML = board.activeplayer.name;
 
     board.endTurn();
 
-    //define new current player
-    htmlCurrentPlayer.innerHTML = board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(event.target)]))[0].name;
-
-    console.log(getIndexCards(event.target));
-    //new round
+    //new round?
     if (board.turn === 0) { //new round, shuffle remaining card and distribute
-        board.round++;
+        board.endRound();
         //remove return card from remaining cards
         setTimeout(() => { //careful, status is updated after 350 ms....
             board.remainingCards = board.remainingCards.filter(card => !card.isReturned);
             board.shuffleCards();
             giveCards(5 - board.round);
         }, 500); // we have to wait for the status to update before filterring
-
     }
+
     displayStatus();
-    setHtmlCurrentPlayer(event.target);
+    setHtmlCurrentPlayer(card);
     console.log(board);
+
     setTimeout(() => {
         if (board.isGameOver() === -1) losePopup.classList.remove("hidden");
         else if (board.isGameOver() === 1) winPopup.classList.remove("hidden");
+        else if (board.activeplayer.isIA) {
+            console.log("ia playing");
+            console.log("here", board.playEasy());
+            //console.log(htmlCards[board.playEasy(100)]);
+            returnCard(htmlCards[board.playEasy()]);
+        }
     }, 500);
+}
+
+
+
+//#region handlers
+function cardClickHandler(event) {
+    returnCard(event.target);
+
 }
 
 function shuffleBtnClickHandler() {
@@ -157,6 +176,18 @@ function soloClkHandler() {
     init();
 }
 
+function easyOverHandler() {
+    htmlSoloTxt.innerText = "EASYYYYYYYYY";
+}
+
+function normalOverHandler() {
+    htmlSoloTxt.innerText = "NOOOORRRRMMMAAAAAALLL";
+}
+
+function hardOverHandler() {
+    htmlSoloTxt.innerText = "HAAAAAAAAAAAAAARD";
+}
+
 //#endregion 
 
 
@@ -179,7 +210,7 @@ function init() {
     //adding html players and hand
     for (let i = 0; i < nbplayer; i++) {
         //adding players to board
-        board.players.push(new Player(`Player ${i}`, rolescard[i]));
+        board.players.push(new Player(`Player ${i}`, rolescard[i], i, true));
 
         const div = document.createElement("div");
         div.classList.add("player");
@@ -280,17 +311,17 @@ function setCardToWire(htmlcard) {
     htmlcard.classList.add("wire");
 }
 
-function flipCard(event) {
-    event.target.classList.add("flip-card");
+function flipCard(eventtarget) {
+    eventtarget.classList.add("flip-card");
 
     //add sound!!!!!
 
     setTimeout(() => {
-        board.remainingCards[getIndexCards(event.target)].isReturned = !board.remainingCards[getIndexCards(event.target)].isReturned;
-        event.target.classList.toggle("recto");
+        board.remainingCards[getIndexCards(eventtarget)].isReturned = !board.remainingCards[getIndexCards(eventtarget)].isReturned;
+        eventtarget.classList.toggle("recto");
     }, 350);
 
-    setTimeout(() => event.target.classList.remove("flip-card"), 450);
+    setTimeout(() => eventtarget.classList.remove("flip-card"), 450);
 }
 
 //find a more generic way?
@@ -425,4 +456,7 @@ function getSoloParameters() {
     //claims is check...
 }
 
+function returnHandler() {
+    returnCard(htmlCards[0]);
+}
 //#endregion
