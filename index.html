@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>my first widget</title>
+    <link rel="stylesheet" href="./css/solo-option.css" />
+    <link rel="stylesheet" href="./css/timebomb.css" />
     <link rel="stylesheet" href="index.css" />
+
     <script type="module" src="index.js"></script>
 </head>
 
@@ -43,24 +46,34 @@
     </section>
 
     <section id="solo-option-page" class="hidden">
-        <section>
-            <div id="singleplayer">
+        <section id="solo-option-top">
+            <div class="horizontal-container">
                 <img src="./images/singleplayer.png" />
-                <p>Single Player</p>
+                <div class="options">
+                    <label>Enter your name (4 to 8 characters):</label>
+                    <input id="solo-name" type="text"></input>
+                    <label>Enter the number of players (4 to 8 players):</label>
+                    <input id="solo-nb-players" type="number"></input>
+                    <label>Show claims ?</label>
+                    <input id="solo-claim" type="checkbox"></input>
+                </div>
             </div>
         </section>
         <section>
+            <p id="option-txt">toto</p>
+        </section>
+        <section>
             <div class="main-menu">
-                <div id="tutorial">
-                    <img src="./images/tutorial.png" />
+                <div id="solo-easy">
+                    <img src="./images/easy.png" />
                     <p>Easy</p>
                 </div>
-                <div id="singleplayer">
-                    <img src="./images/singleplayer.png" />
+                <div id="solo-normal">
+                    <img src="./images/normal.png" />
                     <p>Normal</p>
                 </div>
-                <div id="multiplayer">
-                    <img src="./images/multi.png" />
+                <div id="solo-hard">
+                    <img src="./images/hard.png" />
                     <p>Impossible</p>
                 </div>
             </div>
@@ -99,6 +112,10 @@
 
     <footer>
         <p>&copy; 2020 Ezion Games</p>
+        <div>
+            <label>Music : BBC's Sherlock's Theme</label>
+            <audio src="./sounds/sherlocks-theme.mp3" controls loop></audio>
+        </div>
         <div>
             <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf">
                 <img class="img-rules" src="./images/rules.PNG" />

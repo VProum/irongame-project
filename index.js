@@ -28,6 +28,17 @@ htmlTutorial.onclick = tutorialClkHandler;
 htmlSingleplayer.onclick = singleplayerClkHandler;
 htmlMultiplayer.onclick = multiplayerClkHandler;
 
+const htmlSoloName = document.getElementById("solo-name");
+const htmlSoloNbplayer = document.getElementById("solo-nb-players");
+const htmlSoloClaim = document.getElementById("solo-claim");
+const htmlEasyDiv = document.getElementById("solo-easy");
+const htmlNormalDiv = document.getElementById("solo-normal");
+const htmlHardDiv = document.getElementById("solo-hard");
+
+htmlEasyDiv.onclick = soloClkHandler;
+htmlNormalDiv.onclick = soloClkHandler;
+htmlHardDiv.onclick = soloClkHandler;
+
 const htmlBoard = document.getElementById("board");
 const htmlRound = document.getElementById("round");
 const htmlTurn = document.getElementById("turn");
@@ -40,7 +51,7 @@ let htmlHands = document.querySelectorAll(".hand");
 let htmlPlayerInfos = document.querySelectorAll(".infos");
 let htmlCards = document.querySelectorAll(".card");
 let htmlRoles = document.querySelectorAll(".card-role");
-let htmlScissors = document.querySelectorAll(".card-scissor")
+let htmlScissors = document.querySelectorAll(".card-scissor");
 
 const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
@@ -55,6 +66,7 @@ restartBtn.onclick = () => document.location.reload(true);
 let board;
 let nbplayer = 7;
 let rolescard = [true, true, true, false, false]; //3 blue, 2 red
+let playerNames = [];
 
 //#endregion
 
@@ -138,6 +150,13 @@ function closePopup() {
     losePopup.classList.add("hidden");
 }
 
+function soloClkHandler() {
+    console.log("solo level click");
+    getSoloParameters();
+    show(gamePage);
+    init();
+}
+
 //#endregion 
 
 
@@ -146,6 +165,8 @@ function closePopup() {
 function init() {
     board = new Board();
     htmlBoard.innerHTML = "";
+
+    //getSoloParameters();
 
     //init rolecard (depends on number of players)
     if (nbplayer === 6) {
@@ -395,8 +416,13 @@ function displayStatus() {
     }, 355);
 }
 
-function clearMainSection() {
-    htmlMainSection.innerHTML = "";
+function getSoloParameters() {
+    //TODO : check if value is correct return false
+    nbplayer = htmlSoloNbplayer.value;
+    playerNames = [];
+    playerNames.push(htmlSoloName.value);
+    return true;
+    //claims is check...
 }
 
 //#endregion
