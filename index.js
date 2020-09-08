@@ -3,11 +3,13 @@ import { Board, Card, Player } from "./js/classes.js"
 console.log("js loaded");
 
 //#region declaration of variables && eventlistener
+const htmlTitle = document.getElementById("title");
 const homePage = document.getElementById("main-page");
 const gamePage = document.getElementById("game-page");
 const soloOptPage = document.getElementById("solo-option-page");
+const multiOptPage = document.getElementById("multi-option-page");
 
-const pages = [homePage, gamePage, soloOptPage];
+const pages = [homePage, gamePage, soloOptPage, multiOptPage];
 
 const winPopup = document.getElementById("win-popup");
 const losePopup = document.getElementById("lose-popup");
@@ -28,6 +30,8 @@ htmlTutorial.onclick = tutorialClkHandler;
 htmlSingleplayer.onclick = singleplayerClkHandler;
 htmlMultiplayer.onclick = multiplayerClkHandler;
 
+const htmlMultiStart = document.getElementById("multi-start");
+const htmlMultiNbplayer = document.getElementById("multi-nb-players");
 const htmlSoloName = document.getElementById("solo-name");
 const htmlSoloNbplayer = document.getElementById("solo-nb-players");
 const htmlSoloClaim = document.getElementById("solo-claim");
@@ -36,6 +40,7 @@ const htmlNormalDiv = document.getElementById("solo-normal");
 const htmlHardDiv = document.getElementById("solo-hard");
 const htmlSoloTxt = document.getElementById("option-txt");
 
+htmlMultiStart.onclick = multiClkHandler;
 htmlEasyDiv.onclick = soloClkHandler;
 htmlNormalDiv.onclick = soloClkHandler;
 htmlHardDiv.onclick = soloClkHandler;
@@ -44,11 +49,7 @@ htmlNormalDiv.onmouseover = normalOverHandler;
 htmlHardDiv.onmouseover = hardOverHandler;
 
 const htmlBoard = document.getElementById("board");
-const htmlRound = document.getElementById("round");
-const htmlTurn = document.getElementById("turn");
 const htmlUsedCards = document.getElementById("used-cards");
-const htmlGameOver = document.getElementById("game-over");
-const htmlCurrentPlayer = document.getElementById("current-player");
 
 let htmlPlayers = document.querySelectorAll(".player");
 let htmlHands = document.querySelectorAll(".hand");
@@ -88,7 +89,6 @@ function returnCard(card) {
 
     //define new current player
     board.activeplayer = board.players.filter(player => player.hand.includes(board.remainingCards[getIndexCards(card)]))[0];
-    htmlCurrentPlayer.innerHTML = board.activeplayer.name;
 
     board.endTurn();
 
@@ -100,23 +100,24 @@ function returnCard(card) {
             board.remainingCards = board.remainingCards.filter(card => !card.isReturned);
             board.shuffleCards();
             giveCards(5 - board.round);
+            setHtmlCurrentPlayer();
         }, 500); // we have to wait for the status to update before filterring
     }
 
     displayStatus();
     setHtmlCurrentPlayer(card);
-    console.log(board);
+    console.log("don't look, you cheater!", board);
 
     setTimeout(() => {
         if (board.isGameOver() === -1) losePopup.classList.remove("hidden");
         else if (board.isGameOver() === 1) winPopup.classList.remove("hidden");
         else if (board.activeplayer.isIA) {
-            console.log("ia playing");
-            console.log("here", board.playEasy());
-            //console.log(htmlCards[board.playEasy(100)]);
-            returnCard(htmlCards[board.playEasy()]);
+            setTimeout(() => {
+                console.log("ia playing");
+                returnCard(htmlCards[board.playEasy()]);
+            }, 800);
         }
-    }, 500);
+    }, 550);
 }
 
 
@@ -124,7 +125,6 @@ function returnCard(card) {
 //#region handlers
 function cardClickHandler(event) {
     returnCard(event.target);
-
 }
 
 function shuffleBtnClickHandler() {
@@ -156,12 +156,13 @@ function tutorialClkHandler() {
 function singleplayerClkHandler() {
     console.log("single click");
     show(soloOptPage);
+    htmlTitle.innerText = "Single Player"
 }
 
 function multiplayerClkHandler() {
     console.log("multi click");
-    show(gamePage);
-    init();
+    htmlTitle.innerText = "Local Multi Player";
+    show(multiOptPage);
 }
 
 function closePopup() {
@@ -172,6 +173,13 @@ function closePopup() {
 function soloClkHandler() {
     console.log("solo level click");
     getSoloParameters();
+    show(gamePage);
+    init();
+}
+
+function multiClkHandler() {
+    console.log("multi level click");
+    getMultiParameters();
     show(gamePage);
     init();
 }
@@ -198,6 +206,7 @@ function init() {
     htmlBoard.innerHTML = "";
 
     //getSoloParameters();
+    displayStatus()
 
     //init rolecard (depends on number of players)
     if (nbplayer === 6) {
@@ -206,16 +215,17 @@ function init() {
         rolescard = [true, true, true, true, true, false, false, false]; //5 blue, 3 red
     }
     rolescard = board.shuffle(rolescard);
-
+    let istoto = false;
     //adding html players and hand
     for (let i = 0; i < nbplayer; i++) {
         //adding players to board
-        board.players.push(new Player(`Player ${i}`, rolescard[i], i, true));
+
+        board.players.push(new Player(`Player ${i}`, rolescard[i], i, istoto));
 
         const div = document.createElement("div");
         div.classList.add("player");
         htmlBoard.appendChild(div);
-        //htmlBoard.innerHTML += `<div id="player${i}" class="horizontal-container hand"></div>`;
+        //istoto = true;
     }
     htmlPlayers = document.querySelectorAll(".player");
 
@@ -236,7 +246,6 @@ function init() {
 
     htmlHands = document.querySelectorAll(".hand");
     htmlPlayerInfos = document.querySelectorAll(".infos");
-    htmlCurrentPlayer.innerText = board.players[0].name;
 
     //calculating number of card required and pushing them to the array
     board.cards.push(new Card("bomb"));
@@ -259,15 +268,11 @@ function init() {
         card.classList.remove("flip-card");
     });
 
-    console.log(board);
+    console.log("don't look, you cheater!", board);
 }
 
 
 //#region Html class manipulation
-
-function boardClear() {
-    htmlBoard.innerHTML = "";
-}
 
 function show(section) {
     pages.forEach(page => page.classList.add("hidden"));
@@ -352,7 +357,6 @@ function getIndexCards(card) {
         if (!(htmlcard === card)) {
             index++;
         } else if ((htmlcard === card)) {
-            //console.log("index of card is : ", index);
             return index;
         }
     }
@@ -360,15 +364,33 @@ function getIndexCards(card) {
     return -1;
 }
 
+function getIndexCurrentPlayer() {
+    let index = 0;
+    for (let player of board.players) {
+        if (!(player === board.activeplayer)) {
+            index++;
+        } else if ((player === board.activeplayer)) {
+            return index;
+        }
+    }
+    console.log("player is not found");
+    return -1;
+}
+
 //function to distribute role to the players
 function createHtmlRoles(index, rolearray, targetparent) {
     const div = document.createElement("div");
     div.classList.add("card-role");
-    //div.classList.add("recto-role");
+    div.classList.add("back-role");
     // add according role to element
     rolearray[index] ? div.classList.add("blue-role") : div.classList.add("red-role");
     targetparent.appendChild(div);
     htmlRoles = document.querySelectorAll(".card-role"); //update the array of card
+    htmlRoles.forEach(htmlRole => {
+        htmlRole.onmousedown = showPlayerCards;
+        htmlRole.onmouseup = hidePlayerCards;
+        htmlRole.onmouseout = hidePlayerCards;
+    });
 }
 
 //function to create the scissors card
@@ -381,35 +403,17 @@ function createHtmlScissor(targetparent) {
     htmlScissors = document.querySelectorAll(".card-scissor");
 }
 
-function setHtmlCurrentPlayer(eventtarget) {
-    htmlScissors.forEach(scissor => scissor.classList.add("hidden"));
-    let siblings = getSiblings(eventtarget);
-    siblings[1].classList.remove("hidden");
-}
-
 //function to get the scissor card when we click on a card
-function getSiblings(elem) {
-
-    // Setup siblings array and get the first sibling
-    let siblings = [];
-    let sibling = elem.parentNode.firstChild;
-
-    // Loop through each sibling and push to the array
-    while (sibling) {
-        if (sibling.nodeType === 1 && sibling !== elem) {
-            siblings.push(sibling);
-        }
-        sibling = sibling.nextSibling
-    }
-    return siblings;
-};
+function setHtmlCurrentPlayer() {
+    htmlScissors.forEach(scissor => scissor.classList.add("hidden"));
+    console.log(htmlScissors);
+    htmlScissors[getIndexCurrentPlayer()].classList.remove("hidden");
+}
 
 //function to distribute card to the players
 function giveCards(handsize) {
     htmlHands = document.querySelectorAll(".hand");
     htmlHands.forEach(player => player.innerHTML = "");
-
-    //console.log(htmlPlayer);
 
     let j = 0; //index of remainingcards
     let k = 0; //index of board.players
@@ -425,25 +429,23 @@ function giveCards(handsize) {
             board.players[k].hand.push(board.remainingCards[j]);
             j++;
         }
-        htmlPlayerInfos[k].innerText = `${board.players[k].name} => Number of wire : ${board.players[k].hand.filter(card => card.isWire).length} - Bomb ? ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES!" : "NO!"}`;
+        htmlPlayerInfos[k].innerText = `${board.players[k].name}   Wire : ${board.players[k].hand.filter(card => card.isWire).length} - Bomb : ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES!" : "NO!"}`;
         k++;
     });
-
-
 
     htmlCards.forEach(card => card.onclick = cardClickHandler);
 }
 
 //function to display status of the board
 function displayStatus() {
-    htmlRound.innerText = board.round + 1;
-    htmlTurn.innerText = board.turn + 1;
-
     //display remaining cards (we have to wait for the animation to finish to complete)
     setTimeout(() => {
         htmlUsedCards.innerHTML = "";
         board.usedCards.forEach(card => createHtmlCard(card, htmlUsedCards));
-        htmlGameOver.innerText = board.isGameOver();
+
+        let roundStr = board.round === 3 ? "LAST ROUND !" : "Round " + (board.round + 1);
+        let turnStr = (nbplayer - board.turn) === 1 ? "LAST CUT !" : "Cuts left before next round : " + (nbplayer - board.turn);
+        htmlTitle.innerText = `${roundStr} //  ${turnStr} // Wires left : 3`; //todo update wire
     }, 355);
 }
 
@@ -456,7 +458,29 @@ function getSoloParameters() {
     //claims is check...
 }
 
+function getMultiParameters() {
+    //TODO : check if value is correct return false
+    nbplayer = htmlMultiNbplayer.value;
+    playerNames = [];
+    //todo add players name here
+    //playerNames.push(htmlMultiName.value);
+    return true;
+    //claims is check...
+}
+
 function returnHandler() {
     returnCard(htmlCards[0]);
+}
+
+function showPlayerCards(event) {
+    let playerCards = event.target.parentElement.querySelectorAll(".card");
+    playerCards.forEach(card => card.classList.remove("recto"));
+    event.target.classList.remove("back-role");
+}
+
+function hidePlayerCards(event) {
+    let playerCards = event.target.parentElement.querySelectorAll(".card");
+    playerCards.forEach(card => card.classList.add("recto"));
+    event.target.classList.add("back-role");
 }
 //#endregion

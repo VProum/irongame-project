@@ -9,14 +9,17 @@
     <link rel="stylesheet" href="./css/solo-option.css" />
     <link rel="stylesheet" href="./css/timebomb.css" />
     <link rel="stylesheet" href="index.css" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Iceberg&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Iceberg&display=swap');
+    </style>
     <script type="module" src="index.js"></script>
 </head>
 
 <body>
     <header>
-        <div class="title">
-            <h1>Welcome To London Time Bomb !</h1>
+        <div>
+            <h1 id="title">Welcome To London Time Bomb !</h1>
         </div>
     </header>
     <section id="main-page">
@@ -50,12 +53,13 @@
             <div class="horizontal-container">
                 <img src="./images/singleplayer.png" />
                 <div class="options">
-                    <label>Enter your name (4 to 8 characters):</label>
-                    <input id="solo-name" type="text"></input>
-                    <label>Enter the number of players (4 to 8 players):</label>
-                    <input id="solo-nb-players" type="number" value="7"></input>
-                    <label>Show claims ?</label>
-                    <input id="solo-claim" type="checkbox"></input>
+                    <p>Enter your name (4 to 8 characters):</label>
+                        <input id="solo-name" type="text"></input>
+                        <p>Enter the number of players (4 to 8 players):</p>
+                        <input id="solo-nb-players" type="number" value="7"></input>
+                        <p>Show claims ?
+                            <input id="solo-claim" type="checkbox"></input>
+                        </p>
                 </div>
             </div>
         </section>
@@ -79,10 +83,39 @@
             </div>
         </section>
     </section>
+    <section id="multi-option-page" class="hidden">
+        <section id="multi-option">
+            <div class="horizontal-container">
+                <img src="./images/multi.png" />
+                <div class="options">
+                    <p>Enter the number of TOTAL players (4 to 8 players):</p>
+                    <input id="multi-nb-players" type="number" value="7"></input>
+                    <p>Enter the number of human playing (4 to 8 players):</p>
+                    <input id="multi-nb-human" type="number" value="1"></input>
+                    <p>Show claims ?
+                        <input id="multi-claim" type="checkbox"></input>
+                    </p>
+                    <p>Select the level of IA (if any)</p>
+                    <input type="radio" id="EasyIA" name="IALvl" value="easy">
+                    <label>Easy</label>
+                    <input type="radio" id="MediumIA" name="IALvl" value="normal">
+                    <label>Normal</label>
+                    <input type="radio" id="HardIA" name="IALvl" value="hard">
+                    <label>Cheater</label>
+                </div>
+            </div>
+        </section>
+        <div class="main-menu">
+            <div id="multi-start">
+                <p>Begin Mission !</p>
+                <img src="./images/back-role.png" />
+            </div>
+        </div>
+    </section>
     <section id="tutorial1-page" class="hidden"></section>
     <section id="some-page" class="hidden"></section>
     <section id="some-page" class="hidden"></section>
-    <section id="multi-option-page" class="hidden"></section>
+
 
     <section id="game-page" class="hidden">
         <div class="horizontal-container buttons">
@@ -94,9 +127,6 @@
         <div class="horizontal-container">
             <div id="board"></div>
             <div id="board-status">
-                <h1>Round <span id="round">0</span> // Turn <span id="turn">1</span></h1>
-                <h1>Current player : <span id="current-player">toto</span></h1>
-                <h1>Game Over ? <span id="game-over">false</span></h1>
                 <div id="used-cards"></div>
             </div>
         </div>
