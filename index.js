@@ -122,9 +122,13 @@ function returnCard(card) {
     console.log("don't look, you cheater!", board);
 
     setTimeout(() => {
-        if (board.isGameOver() === -1) losePopup.classList.remove("hidden");
-        else if (board.isGameOver() === 1) winPopup.classList.remove("hidden");
-        else if (board.activeplayer.isIA) {
+        if (board.isGameOver() === -1) {
+            losePopup.classList.remove("hidden");
+            showAllCards();
+        } else if (board.isGameOver() === 1) {
+            winPopup.classList.remove("hidden");
+            showAllCards();
+        } else if (board.activeplayer.isIA) {
             setTimeout(() => {
                 console.log("ia playing");
                 returnCard(htmlCards[board.playEasy()]);
@@ -566,5 +570,12 @@ function hidePlayerCards(event) {
     let playerCards = event.target.parentElement.querySelectorAll(".card");
     playerCards.forEach(card => card.classList.add("recto"));
     event.target.classList.add("back-role");
+}
+
+function showAllCards() {
+    htmlCards = document.querySelectorAll(".card");
+    htmlCards.forEach(card => card.classList.remove("recto"));
+    htmlRoles = document.querySelectorAll(".card-role");
+    htmlRoles.forEach(card => card.classList.remove("back-role"));
 }
 //#endregion

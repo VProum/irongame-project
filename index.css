@@ -1,6 +1,6 @@
 div {
-    border: 1px solid magenta;
-    background: rgba(255, 255, 255, 0.1);
+    /* border: 1px solid magenta;
+    background: rgba(255, 255, 255, 0.1);*/
     border-radius: 10px;
 }
 
@@ -58,6 +58,21 @@ header {
 
 .lore>p {
     padding: 20px 150px
+}
+
+button {
+    background-color: orange;
+    /* Green */
+    text-shadow: 1px 1px 2px black, 0 0 25px white;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 28px;
+    border-radius: 10px;
+    font-family: 'Iceberg', cursive;
 }
 
 .sherlock,
