@@ -35,6 +35,7 @@ const htmlMultiNbPlayer = document.getElementById("multi-nb-players");
 const htmlMultiNbHuman = document.getElementById("multi-nb-human");
 const htmlMultiClaim = document.getElementById("multi-claim");
 const htmlIALvl = document.getElementById("ia-lvl");
+const htmlRadioIaLvl = document.querySelectorAll('input[name="IALvl"]');
 const htmlSoloName = document.getElementById("solo-name");
 const htmlSoloNbPlayer = document.getElementById("solo-nb-players");
 const htmlSoloClaim = document.getElementById("solo-claim");
@@ -83,6 +84,7 @@ let nbplayer = 7;
 let rolescard = [true, true, true, false, false]; //3 blue, 2 red
 let playerNames = [];
 let isClaim = true;
+let iALvlstr = "Easy";
 
 //#endregion
 
@@ -217,14 +219,17 @@ function multiClkHandler() {
 
 function easyOverHandler() {
     htmlSoloTxt.innerText = "EASYYYYYYYYY";
+    iALvlstr = "Easy";
 }
 
 function normalOverHandler() {
     htmlSoloTxt.innerText = "NOOOORRRRMMMAAAAAALLL";
+    iALvlstr = "Normal";
 }
 
 function hardOverHandler() {
     htmlSoloTxt.innerText = "HAAAAAAAAAAAAAARD";
+    iALvlstr = "Hard";
 }
 
 //#endregion 
@@ -246,17 +251,23 @@ function init() {
         rolescard = [true, true, true, true, true, false, false, false]; //5 blue, 3 red
     }
     rolescard = board.shuffle(rolescard);
-    let istoto = false;
+    let isIa = false;
+    let j = 1;
     //adding html players and hand
     for (let i = 0; i < nbplayer; i++) {
         //adding players to board
+        let newplayer = new Player(playerNames[i] === undefined ? `Player ${i}` : playerNames[i], rolescard[i], i, isIa)
+        if (newplayer.isIA) {
+            newplayer.name = `${iALvlstr} IA ${j}`;
+            j++;
+        }
 
-        board.players.push(new Player(playerNames[i] === undefined ? `Player ${i}` : playerNames[i], rolescard[i], i, istoto));
+        board.players.push(newplayer);
 
         const div = document.createElement("div");
         div.classList.add("player");
         htmlBoard.appendChild(div);
-        istoto = true;
+        isIa = i >= playerNames.length - 1 ? true : false;
     }
     htmlPlayers = document.querySelectorAll(".player");
 
@@ -521,7 +532,6 @@ function getMultiParameters() {
     //TODO : check if value is correct return false
     nbplayer = htmlMultiNbPlayer.value;
     playerNames = [];
-
     htmlMultiHumanNames = document.querySelectorAll(".multi-name-player");
 
     let i = 0;
@@ -530,10 +540,13 @@ function getMultiParameters() {
         i++;
     });
 
-    console.log(playerNames);
+    for (let IaLvl of htmlRadioIaLvl) {
+        if (IaLvl.checked) {
+            iALvlstr = IaLvl.value;
+            break;
+        }
+    }
 
-    //todo add players name here
-    //playerNames.push(htmlMultiName.value);
     isClaim = htmlMultiClaim.checked;
     return true;
     //claims is check...
