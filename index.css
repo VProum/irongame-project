@@ -1,6 +1,6 @@
 div {
-    /*border: 1px solid magenta;
-    background: rgba(255, 255, 255, 0.1);*/
+    border: 1px solid magenta;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
 }
 
@@ -25,10 +25,13 @@ body {
 .horizontal-container {
     display: flex;
     text-align: center;
+    justify-content: space-around;
+    padding-left: 20px;
 }
 
 .horizontal-container>img {
     width: 12em;
+    height: 12em;
 }
 
 header {
@@ -102,9 +105,42 @@ header {
     animation: pulsate 1s ease-in-out infinite both;
 }
 
-.option p {
+h2 {
+    margin: 0;
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px black;
+    font-size: 1.8rem;
+    display: inline-block;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.options span,
+.options p {
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px orange;
+    font-size: 1.8rem
+}
+
+.options div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#multi-input {
+    display: flex;
+    flex-direction: column;
+}
+
+#option-txt {
     color: orange;
     text-shadow: 1px 1px 2px black, 0 0 25px white;
+    font-size: 3rem
 }
 
 .img-rules {

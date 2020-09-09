@@ -53,13 +53,19 @@
             <div class="horizontal-container">
                 <img src="./images/singleplayer.png" />
                 <div class="options">
-                    <p>Enter your name (4 to 8 characters):</label>
+                    <div>
+                        <span>Enter your name (4 to 12 characters):</span>
                         <input id="solo-name" type="text"></input>
-                        <p>Enter the number of players (4 to 8 players):</p>
+                    </div>
+                    <div>
+                        <span>Enter the number of players (4 to 8 players):</span>
                         <input id="solo-nb-players" type="number" value="7"></input>
-                        <p>Show claims ?
+                    </div>
+                    <div>
+                        <span>Show claims ?
                             <input id="solo-claim" type="checkbox"></input>
-                        </p>
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -88,20 +94,28 @@
             <div class="horizontal-container">
                 <img src="./images/multi.png" />
                 <div class="options">
-                    <p>Enter the number of TOTAL players (4 to 8 players):</p>
-                    <input id="multi-nb-players" type="number" value="7"></input>
-                    <p>Enter the number of human playing (4 to 8 players):</p>
-                    <input id="multi-nb-human" type="number" value="1"></input>
-                    <p>Show claims ?
-                        <input id="multi-claim" type="checkbox"></input>
-                    </p>
-                    <p>Select the level of IA (if any)</p>
-                    <input type="radio" id="EasyIA" name="IALvl" value="easy">
-                    <label>Easy</label>
-                    <input type="radio" id="MediumIA" name="IALvl" value="normal">
-                    <label>Normal</label>
-                    <input type="radio" id="HardIA" name="IALvl" value="hard">
-                    <label>Cheater</label>
+                    <div>
+                        <span>Enter the number of TOTAL players (4 to 8 players):</span>
+                        <input id="multi-nb-players" type="number" value="7"></input>
+                    </div>
+                    <div id="multi-input">
+                        <span>Enter the number of human playing (4 to 8 players):</span>
+                        <input id="multi-nb-human" type="number" value="1"></input>
+                    </div>
+                    <div id="ia-lvl">
+                        <p>Select the level of IA (if any)</p>
+                        <input type="radio" id="EasyIA" name="IALvl" value="easy">
+                        <span>Easy</span>
+                        <input type="radio" id="MediumIA" name="IALvl" value="normal">
+                        <span>Normal</span>
+                        <input type="radio" id="HardIA" name="IALvl" value="hard">
+                        <span>Cheater</span>
+                    </div>
+                    <div>
+                        <span>Show claims ?
+                            <input id="multi-claim" type="checkbox"></input>
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -118,16 +132,27 @@
 
 
     <section id="game-page" class="hidden">
-        <div class="horizontal-container buttons">
-            <button id="shuffle-btn"> Shuffle </button>
-            <button id="reset-btn"> Reset </button>
-            <button id="restart-btn"> Restart </button>
-            <button id="return-btn"> ReturnCard </button>
-        </div>
         <div class="horizontal-container">
             <div id="board"></div>
             <div id="board-status">
-                <div id="used-cards"></div>
+                <div>
+                    <span>Wire Cut</span>
+                    <div id="nb-wire horizontal-container">
+                        <img src="./images/wire.png" alt="">
+                        <span id="nb-wire-span">42</span>
+                    </div>
+                    <div id="nb-neutral horizontal-container">
+                        <img src="./images/neutral.png" alt="">
+                        <span id="nb-neutral-span">42</span>
+                    </div>
+                </div>
+                <!-- <div id="used-cards"></div> -->
+                <div class="buttons">
+                    <button id="shuffle-btn"> Shuffle </button>
+                    <button id="reset-btn"> Reset </button>
+                    <button id="restart-btn"> Restart </button>
+                    <button id="return-btn"> ReturnCard </button>
+                </div>
             </div>
         </div>
     </section>

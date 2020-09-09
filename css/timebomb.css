@@ -1,5 +1,5 @@
 #board {
-    width: 80%;
+    width: 90%;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -7,9 +7,24 @@
 }
 
 #board-status {
-    width: 20%;
+    width: 10%;
     height: 100%;
     background: rgba(119, 136, 153, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#board-status img {
+    width: 60px;
+    height: 110px;
+}
+
+#board-status span {
+    color: orange;
+    text-shadow: 1px 1px 2px black, 0 0 25px white;
+    font-size: 2em;
 }
 
 #used-cards {
@@ -22,16 +37,19 @@
     width: 48%;
     height: 23%;
     margin-right: 10px;
+    margin-top: 10px;
+    position: relative;
 }
 
 .infos {
     background: rgba(4, 139, 154, 0.8);
-    margin-top: 20px;
     color: whitesmoke;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
 }
 
 .hand {
-    /*background: rgba(212, 187, 126, 0.8);*/
     background: rgba(119, 136, 153, 0.8);
 }
 
@@ -73,10 +91,14 @@
     height: 120px;
     width: 250px;
     z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 70px;
     animation: slide-in-elliptic-right-bck 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    /*left: 50%;
-    transform: translateX(-50%);*/
+    color: whitesmoke;
+    text-shadow: 1px 1px 2px black, 0 0 25px white;
+    font-size: 1.1em;
 }
 
 .neutral {

@@ -83,6 +83,14 @@ export class Board {
         return randomCard;
     }
 
+    nbWire() {
+        return this.usedCards.filter(card => card.isWire).length;
+    }
+
+    nbNeutral() {
+        return this.usedCards.length - this.nbWire();
+    }
+
     playNormal() {
 
     }

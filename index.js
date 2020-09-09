@@ -31,14 +31,19 @@ htmlSingleplayer.onclick = singleplayerClkHandler;
 htmlMultiplayer.onclick = multiplayerClkHandler;
 
 const htmlMultiStart = document.getElementById("multi-start");
-const htmlMultiNbplayer = document.getElementById("multi-nb-players");
+const htmlMultiNbPlayer = document.getElementById("multi-nb-players");
+const htmlMultiNbHuman = document.getElementById("multi-nb-human");
+const htmlMultiClaim = document.getElementById("multi-claim");
+const htmlIALvl = document.getElementById("ia-lvl");
 const htmlSoloName = document.getElementById("solo-name");
-const htmlSoloNbplayer = document.getElementById("solo-nb-players");
+const htmlSoloNbPlayer = document.getElementById("solo-nb-players");
 const htmlSoloClaim = document.getElementById("solo-claim");
 const htmlEasyDiv = document.getElementById("solo-easy");
 const htmlNormalDiv = document.getElementById("solo-normal");
 const htmlHardDiv = document.getElementById("solo-hard");
 const htmlSoloTxt = document.getElementById("option-txt");
+
+htmlMultiNbHuman.onchange = nbHumanChangeHandler;
 
 htmlMultiStart.onclick = multiClkHandler;
 htmlEasyDiv.onclick = soloClkHandler;
@@ -53,10 +58,15 @@ const htmlUsedCards = document.getElementById("used-cards");
 
 let htmlPlayers = document.querySelectorAll(".player");
 let htmlHands = document.querySelectorAll(".hand");
-let htmlPlayerInfos = document.querySelectorAll(".infos");
+//let htmlPlayerInfos = document.querySelectorAll(".infos");
+let htmlPlayerName = document.querySelectorAll(".name");
+let htmlPlayerWireBomb = document.querySelectorAll(".wire-bomb");
 let htmlCards = document.querySelectorAll(".card");
 let htmlRoles = document.querySelectorAll(".card-role");
 let htmlScissors = document.querySelectorAll(".card-scissor");
+let htmlNbWire = document.getElementById("nb-wire-span");
+let htmlNbNeutral = document.getElementById("nb-neutral-span");
+let htmlMultiHumanNames = document.querySelectorAll(".multi-name-player")
 
 const shuffleBtn = document.getElementById("shuffle-btn");
 const resetBtn = document.getElementById("reset-btn");
@@ -72,6 +82,7 @@ let board;
 let nbplayer = 7;
 let rolescard = [true, true, true, false, false]; //3 blue, 2 red
 let playerNames = [];
+let isClaim = true;
 
 //#endregion
 
@@ -120,22 +131,37 @@ function returnCard(card) {
     }, 550);
 }
 
-
-
 //#region handlers
 function cardClickHandler(event) {
     returnCard(event.target);
 }
 
-function shuffleBtnClickHandler() {
-    console.log("shuffle click");
-    let index = 0;
+function nbHumanChangeHandler(event) {
+    console.log(event);
 
+    let div = document.createElement("div");
+    let span = document.createElement("span");
+    let input = document.createElement("input");
+
+    for (let i = 1; i <= htmlMultiNbHuman.value; i++) {
+        div = document.createElement("div");
+        span = document.createElement("span");
+        input = document.createElement("input");
+        console.log(i);
+        span.innerText = `Enter the name of player ${i} (4 to 12 characters):`;
+        div.appendChild(span);
+        input.type = "text";
+        input.classList.add(`multi-name-player`);
+        div.appendChild(input);
+        event.target.parentElement.append(div);
+    }
+}
+
+function shuffleBtnClickHandler() {
     board.shuffleCards();
 
     htmlCards.forEach(htmlcard => {
         setHtmlCard(board.remainingCards[index], htmlcard);
-        index++;
         //animation
         htmlcard.classList.add("wobble");
         htmlcard.classList.remove("flip-card");
@@ -144,8 +170,17 @@ function shuffleBtnClickHandler() {
 }
 
 function resetBtnClickHandler() {
-    console.log("reset click");
+    let index = 0;
     //set all card to recto and show refresh animation
+    htmlCards.forEach(htmlcard => {
+        setHtmlCard(board.remainingCards[index], htmlcard);
+        //animation
+        htmlcard.classList.add("wobble");
+        htmlcard.classList.remove("flip-card");
+        setTimeout(() => htmlcard.classList.remove("wobble"), 800);
+        index++;
+    });
+
     init();
 }
 
@@ -154,13 +189,11 @@ function tutorialClkHandler() {
 }
 
 function singleplayerClkHandler() {
-    console.log("single click");
     show(soloOptPage);
     htmlTitle.innerText = "Single Player"
 }
 
 function multiplayerClkHandler() {
-    console.log("multi click");
     htmlTitle.innerText = "Local Multi Player";
     show(multiOptPage);
 }
@@ -171,14 +204,12 @@ function closePopup() {
 }
 
 function soloClkHandler() {
-    console.log("solo level click");
     getSoloParameters();
     show(gamePage);
     init();
 }
 
 function multiClkHandler() {
-    console.log("multi level click");
     getMultiParameters();
     show(gamePage);
     init();
@@ -220,32 +251,40 @@ function init() {
     for (let i = 0; i < nbplayer; i++) {
         //adding players to board
 
-        board.players.push(new Player(`Player ${i}`, rolescard[i], i, istoto));
+        board.players.push(new Player(playerNames[i] === undefined ? `Player ${i}` : playerNames[i], rolescard[i], i, istoto));
 
         const div = document.createElement("div");
         div.classList.add("player");
         htmlBoard.appendChild(div);
-        //istoto = true;
+        istoto = true;
     }
     htmlPlayers = document.querySelectorAll(".player");
 
     let i = 0;
     htmlPlayers.forEach(player => {
+        let div = document.createElement("div");
+        div.classList.add("infos");
 
-        const h2 = document.createElement("h2");
-        h2.classList.add("infos");
+        let h2 = document.createElement("h2");
+        h2.classList.add("name");
         h2.innerText = board.players[i].name;
-        player.appendChild(h2);
+        div.appendChild(h2);
 
-        const div = document.createElement("div");
-        div.classList.add("horizontal-container");
-        div.classList.add("hand");
+        h2 = document.createElement("h2");
+        h2.classList.add("wire-bomb");
+        div.appendChild(h2);
+        player.appendChild(div);
+
+        div = document.createElement("div");
+        div.classList.add("horizontal-container", "hand");
         player.appendChild(div);
         i++;
     });
 
     htmlHands = document.querySelectorAll(".hand");
-    htmlPlayerInfos = document.querySelectorAll(".infos");
+    //htmlPlayerInfos = document.querySelectorAll(".infos");
+    htmlPlayerName = document.querySelectorAll(".name");
+    htmlPlayerWireBomb = document.querySelectorAll(".wire-bomb");
 
     //calculating number of card required and pushing them to the array
     board.cards.push(new Card("bomb"));
@@ -265,7 +304,9 @@ function init() {
     //animations
     htmlCards.forEach(card => {
         setCardToRecto(card);
+        card.classList.add("wobble");
         card.classList.remove("flip-card");
+        setTimeout(() => card.classList.remove("wobble"), 800);
     });
 
     console.log("don't look, you cheater!", board);
@@ -398,7 +439,7 @@ function createHtmlScissor(targetparent) {
     const div = document.createElement("div");
     div.classList.add("card-scissor");
     div.classList.add("hidden");
-    div.innerHTML = "Current Player";
+    div.innerHTML = "<h3>Current Player</h3>";
     targetparent.appendChild(div);
     htmlScissors = document.querySelectorAll(".card-scissor");
 }
@@ -406,7 +447,6 @@ function createHtmlScissor(targetparent) {
 //function to get the scissor card when we click on a card
 function setHtmlCurrentPlayer() {
     htmlScissors.forEach(scissor => scissor.classList.add("hidden"));
-    console.log(htmlScissors);
     htmlScissors[getIndexCurrentPlayer()].classList.remove("hidden");
 }
 
@@ -422,48 +462,79 @@ function giveCards(handsize) {
         createHtmlRoles(k, rolescard, player);
         createHtmlScissor(player);
         board.players[k].hand = []; //reset player hand
-        htmlPlayerInfos[k].innerText = ""; //reset player infos
+        //htmlPlayerInfos[k].innerText = ""; //reset player infos
+        htmlPlayerName[k].innerText = "";
+        htmlPlayerWireBomb[k].innerText = "";
 
         for (let i = 0; i < handsize; i++) {
             createHtmlCard(board.remainingCards[j], player);
             board.players[k].hand.push(board.remainingCards[j]);
             j++;
         }
-        htmlPlayerInfos[k].innerText = `${board.players[k].name}   Wire : ${board.players[k].hand.filter(card => card.isWire).length} - Bomb : ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES!" : "NO!"}`;
+        //htmlPlayerInfos[k].innerText = `${board.players[k].name} Wire: ${board.players[k].hand.filter(card => card.isWire).length} - Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}`;
+        htmlPlayerName[k].innerText = board.players[k].name;
+
+        //if claims
+        htmlPlayerWireBomb[k].innerText = isClaim ? `Wire: ${board.players[k].hand.filter(card => card.isWire).length} ~ Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}` : "";
+
         k++;
     });
 
-    htmlCards.forEach(card => card.onclick = cardClickHandler);
+    //htmlCards.forEach(card => card.onclick = cardClickHandler);
+
+    htmlCards.forEach(card => {
+        setCardToRecto(card);
+        card.onclick = cardClickHandler
+        card.classList.add("wobble");
+        card.classList.remove("flip-card");
+        setTimeout(() => card.classList.remove("wobble"), 800);
+    });
 }
 
 //function to display status of the board
 function displayStatus() {
     //display remaining cards (we have to wait for the animation to finish to complete)
     setTimeout(() => {
-        htmlUsedCards.innerHTML = "";
-        board.usedCards.forEach(card => createHtmlCard(card, htmlUsedCards));
+        //htmlUsedCards.innerHTML = "";
+        //board.usedCards.forEach(card => createHtmlCard(card, htmlUsedCards));
 
         let roundStr = board.round === 3 ? "LAST ROUND !" : "Round " + (board.round + 1);
         let turnStr = (nbplayer - board.turn) === 1 ? "LAST CUT !" : "Cuts left before next round : " + (nbplayer - board.turn);
-        htmlTitle.innerText = `${roundStr} //  ${turnStr} // Wires left : 3`; //todo update wire
+        htmlTitle.innerText = `${roundStr} //  ${turnStr} // Wires left : ${nbplayer - board.nbWire()}`; //todo update wire
+
+        htmlNbWire.innerText = "X" + board.nbWire();
+        htmlNbNeutral.innerText = "X" + board.nbNeutral();
     }, 355);
 }
 
 function getSoloParameters() {
     //TODO : check if value is correct return false
-    nbplayer = htmlSoloNbplayer.value;
+    nbplayer = htmlSoloNbPlayer.value;
     playerNames = [];
     playerNames.push(htmlSoloName.value);
+    isClaim = htmlSoloClaim.checked;
     return true;
     //claims is check...
 }
 
 function getMultiParameters() {
     //TODO : check if value is correct return false
-    nbplayer = htmlMultiNbplayer.value;
+    nbplayer = htmlMultiNbPlayer.value;
     playerNames = [];
+
+    htmlMultiHumanNames = document.querySelectorAll(".multi-name-player");
+
+    let i = 0;
+    htmlMultiHumanNames.forEach(HtmlName => {
+        playerNames.push(HtmlName.value === "" ? `Player ${i}` : HtmlName.value);
+        i++;
+    });
+
+    console.log(playerNames);
+
     //todo add players name here
     //playerNames.push(htmlMultiName.value);
+    isClaim = htmlMultiClaim.checked;
     return true;
     //claims is check...
 }
