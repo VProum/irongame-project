@@ -2,6 +2,8 @@ import { Board, Card, Player } from "./js/classes.js"
 
 console.log("js loaded");
 
+const audio = document.getElementById("audio");
+
 //#region declaration of variables && eventlistener
 const htmlTitle = document.getElementById("title");
 const homePage = document.getElementById("main-page");
@@ -192,16 +194,19 @@ function resetBtnClickHandler() {
 
 function tutorialClkHandler() {
     console.log("tuto click");
+    audio.play();
 }
 
 function singleplayerClkHandler() {
     show(soloOptPage);
-    htmlTitle.innerText = "Single Player"
+    htmlTitle.innerText = "Single Player";
+    audio.play();
 }
 
 function multiplayerClkHandler() {
     htmlTitle.innerText = "Local Multi Player";
     show(multiOptPage);
+    audio.play();
 }
 
 function closePopup() {
