@@ -32,14 +32,17 @@ htmlTutorial.onclick = tutorialClkHandler;
 htmlSingleplayer.onclick = singleplayerClkHandler;
 htmlMultiplayer.onclick = multiplayerClkHandler;
 
+const htmlSoloForm = document.getElementById("solo-form");
+const htmlMultiForm = document.getElementById("multi-form");
 const htmlMultiStart = document.getElementById("multi-start");
+const htmlMultiStartTxt = document.getElementById("multi-start-txt");
 const htmlMultiNbPlayer = document.getElementById("multi-nb-players");
 const htmlMultiNbHuman = document.getElementById("multi-nb-human");
 const htmlMultiClaim = document.getElementById("multi-claim");
 const htmlIALvl = document.getElementById("ia-lvl");
 const htmlRadioIaLvl = document.querySelectorAll('input[name="IALvl"]');
 const htmlSoloName = document.getElementById("solo-name");
-const htmlSoloNbPlayer = document.getElementById("solo-nb-players");
+let htmlSoloNbPlayer = document.getElementById("solo-nb-players");
 const htmlSoloClaim = document.getElementById("solo-claim");
 const htmlEasyDiv = document.getElementById("solo-easy");
 const htmlNormalDiv = document.getElementById("solo-normal");
@@ -94,6 +97,7 @@ let iALvlstr = "Easy";
 
 function returnCard(card) {
     htmlCards = document.querySelectorAll(".card"); //update the card
+    let playercard = card.parentElement.querySelectorAll(".card"); //select card that is on hand of player
 
     flipCard(card);
     setCard(card, board.remainingCards[getIndexCards(card)]);
@@ -116,11 +120,19 @@ function returnCard(card) {
             board.shuffleCards();
             giveCards(5 - board.round);
             setHtmlCurrentPlayer();
+            setTimeout(() => {
+                playercard = card.parentElement.querySelectorAll(".card");
+                playercard.forEach(card => card.classList.add("remove-events"));
+            }, 100);
         }, 500); // we have to wait for the status to update before filterring
     }
 
     displayStatus();
     setHtmlCurrentPlayer(card);
+
+    htmlCards.forEach(card => card.classList.remove("remove-events"));
+    playercard.forEach(card => card.classList.add("remove-events"));
+
     console.log("don't look, you cheater!", board);
 
     setTimeout(() => {
@@ -147,18 +159,27 @@ function cardClickHandler(event) {
 function nbHumanChangeHandler(event) {
     console.log(event);
 
+    while (event.target.nextElementSibling) {
+        event.target.nextElementSibling.remove();
+    }
+
+
     let div = document.createElement("div");
     let span = document.createElement("span");
     let input = document.createElement("input");
 
-    for (let i = 1; i <= htmlMultiNbHuman.value; i++) {
+    htmlSoloNbPlayer = document.getElementById("multi-nb-players");
+
+    let maxHuman = Math.min(htmlMultiNbHuman.value, htmlSoloNbPlayer.value);
+
+    for (let i = 1; i <= maxHuman; i++) {
         div = document.createElement("div");
         span = document.createElement("span");
         input = document.createElement("input");
-        console.log(i);
-        span.innerText = `Enter the name of player ${i} (4 to 12 characters):`;
+        span.innerText = `Enter the name of player ${i} (12 characters max): `;
         div.appendChild(span);
         input.type = "text";
+        input.maxLength = "12";
         input.classList.add(`multi-name-player`);
         div.appendChild(input);
         event.target.parentElement.append(div);
@@ -215,15 +236,19 @@ function closePopup() {
 }
 
 function soloClkHandler() {
-    getSoloParameters();
-    show(gamePage);
-    init();
+    if (getSoloParameters()) {
+        show(gamePage);
+        init();
+    } else {
+        htmlSoloTxt.innerText = "Wrong Parameter :(";
+    }
 }
 
 function multiClkHandler() {
-    getMultiParameters();
-    show(gamePage);
-    init();
+    if (getMultiParameters()) {
+        show(gamePage);
+        init();
+    } else htmlMultiStartTxt.innerHTML = "Wrong Parameter :("
 }
 
 function easyOverHandler() {
@@ -328,6 +353,14 @@ function init() {
         card.classList.remove("flip-card");
         setTimeout(() => card.classList.remove("wobble"), 800);
     });
+
+    //init win/lose msg
+    board.getBlueTeam().forEach(player => { winMsg.innerText += `${player.name}, ` });
+    board.getRedTeam().forEach(player => { loseMsg.innerText += `${player.name}, ` });
+    console.log(loseMsg);
+    winMsg.innerText = winMsg.innerText.slice(0, -1);
+    loseMsg.innerText = loseMsg.innerText.slice(0, -1);
+    console.log(loseMsg.innerText.slice(0, -1));
 
     console.log("don't look, you cheater!", board);
 }
@@ -468,6 +501,8 @@ function createHtmlScissor(targetparent) {
 function setHtmlCurrentPlayer() {
     htmlScissors.forEach(scissor => scissor.classList.add("hidden"));
     htmlScissors[getIndexCurrentPlayer()].classList.remove("hidden");
+    htmlPlayers.forEach(player => player.classList.remove("current-player"));
+    htmlPlayers[getIndexCurrentPlayer()].classList.add("current-player");
 }
 
 //function to distribute card to the players
@@ -528,37 +563,37 @@ function displayStatus() {
 }
 
 function getSoloParameters() {
-    //TODO : check if value is correct return false
-    nbplayer = htmlSoloNbPlayer.value;
-    playerNames = [];
-    playerNames.push(htmlSoloName.value);
-    isClaim = htmlSoloClaim.checked;
-    return true;
-    //claims is check...
+    if (htmlSoloForm.checkValidity()) {
+        nbplayer = htmlSoloNbPlayer.value;
+        playerNames = [];
+        playerNames.push(htmlSoloName.value ? htmlSoloName.value : "Anonymous");
+        isClaim = htmlSoloClaim.checked;
+        return true;
+    } else return false;
 }
 
 function getMultiParameters() {
-    //TODO : check if value is correct return false
-    nbplayer = htmlMultiNbPlayer.value;
-    playerNames = [];
-    htmlMultiHumanNames = document.querySelectorAll(".multi-name-player");
+    if (htmlMultiForm.checkValidity()) {
+        nbplayer = htmlMultiNbPlayer.value;
+        playerNames = [];
+        htmlMultiHumanNames = document.querySelectorAll(".multi-name-player");
 
-    let i = 0;
-    htmlMultiHumanNames.forEach(HtmlName => {
-        playerNames.push(HtmlName.value === "" ? `Player ${i}` : HtmlName.value);
-        i++;
-    });
+        let i = 0;
+        htmlMultiHumanNames.forEach(HtmlName => {
+            playerNames.push(HtmlName.value ? HtmlName.value : `Player ${i}`);
+            i++;
+        });
 
-    for (let IaLvl of htmlRadioIaLvl) {
-        if (IaLvl.checked) {
-            iALvlstr = IaLvl.value;
-            break;
+        for (let IaLvl of htmlRadioIaLvl) {
+            if (IaLvl.checked) {
+                iALvlstr = IaLvl.value;
+                break;
+            }
         }
-    }
 
-    isClaim = htmlMultiClaim.checked;
-    return true;
-    //claims is check...
+        isClaim = htmlMultiClaim.checked;
+        return true;
+    } else return false;
 }
 
 function returnHandler() {
@@ -572,9 +607,15 @@ function showPlayerCards(event) {
 }
 
 function hidePlayerCards(event) {
+    htmlCards = document.querySelectorAll(".card");
     let playerCards = event.target.parentElement.querySelectorAll(".card");
-    playerCards.forEach(card => card.classList.add("recto"));
     event.target.classList.add("back-role");
+
+    playerCards.forEach(card => setHtmlCard(board.remainingCards[getIndexCards(card)], card));
+
+
+    //select all card, get index of card, set card
+
 }
 
 function showAllCards() {

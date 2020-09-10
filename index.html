@@ -52,21 +52,23 @@
         <section id="solo-option-top">
             <div class="horizontal-container">
                 <img src="./images/singleplayer.png" />
-                <div class="options">
-                    <div>
-                        <span>Enter your name (4 to 12 characters):</span>
-                        <input id="solo-name" type="text" value="G@m3rz"></input>
-                    </div>
-                    <div>
-                        <span>Enter the number of players (4 to 8 players):</span>
-                        <input id="solo-nb-players" type="number" value="7"></input>
-                    </div>
-                    <div>
-                        <span>Show claims ?
+                <form id="solo-form">
+                    <div class="options">
+                        <div>
+                            <span>Enter your name (12 characters max):</span>
+                            <input id="solo-name" type="text" value="G@m3rz" maxlength="12" required></input>
+                        </div>
+                        <div>
+                            <span>Enter the number of players (4 to 8 players):</span>
+                            <input id="solo-nb-players" type="number" value="7" min="4" max="8"></input>
+                        </div>
+                        <div>
+                            <span>Show claims ?
                             <input id="solo-claim" type="checkbox"></input>
                         </span>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </section>
         <section>
@@ -93,35 +95,37 @@
         <section id="multi-option">
             <div class="horizontal-container">
                 <img src="./images/multi.png" />
-                <div class="options">
-                    <div>
-                        <span>Enter the number of TOTAL players (4 to 8 players):</span>
-                        <input id="multi-nb-players" type="number" value="7"></input>
-                    </div>
-                    <div id="multi-input">
-                        <span>Enter the number of human playing (4 to 8 players):</span>
-                        <input id="multi-nb-human" type="number" value="1"></input>
-                    </div>
-                    <div id="ia-lvl">
-                        <p>Select the level of IA (if any)</p>
-                        <input type="radio" id="EasyIA" name="IALvl" value="Easy">
-                        <span>Easy</span>
-                        <input type="radio" id="MediumIA" name="IALvl" value="Normal">
-                        <span>Normal</span>
-                        <input type="radio" id="HardIA" name="IALvl" value="Hard">
-                        <span>Cheater</span>
-                    </div>
-                    <div>
-                        <span>Show claims ?
+                <form id="multi-form">
+                    <div class="options">
+                        <div>
+                            <span>Enter the number of TOTAL players (4 to 8 players):</span>
+                            <input id="multi-nb-players" type="number" value="7" min="4" max="8"></input>
+                        </div>
+                        <div id="multi-input">
+                            <span>Enter the number of human playing :</span>
+                            <input id="multi-nb-human" type="number" value="1" min="1" max="8"></input>
+                        </div>
+                        <div id="ia-lvl">
+                            <p>Select the level of IA (if any)</p>
+                            <input type="radio" id="EasyIA" name="IALvl" value="Easy">
+                            <span>Easy</span>
+                            <input type="radio" id="MediumIA" name="IALvl" value="Normal">
+                            <span>Normal</span>
+                            <input type="radio" id="HardIA" name="IALvl" value="Hard">
+                            <span>Cheater</span>
+                        </div>
+                        <div>
+                            <span>Show claims ?
                             <input id="multi-claim" type="checkbox"></input>
                         </span>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </section>
         <div class="main-menu">
             <div id="multi-start">
-                <p>Begin Mission !</p>
+                <p id="multi-start-txt">Begin Mission !</p>
                 <img src="./images/back-role.png" />
             </div>
         </div>
@@ -167,7 +171,7 @@
         </div>
         <div>
             <p class="thanks-to"> Congratulation to : </p>
-            <p id="lose-msg">toto tata titi</p>
+            <p id="lose-msg"></p>
             <p> </p>
             <p class="thanks-to">for making Big Ben explode !</p>
         </div>

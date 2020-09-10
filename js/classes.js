@@ -99,6 +99,14 @@ export class Board {
 
     }
 
+    getBlueTeam() {
+        return this.players.filter(player => player.isBlue);
+    }
+
+    getRedTeam() {
+        return this.players.filter(player => !player.isBlue);
+    }
+
 }
 
 
