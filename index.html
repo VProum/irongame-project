@@ -33,15 +33,15 @@
         <section>
             <div class="main-menu">
                 <div id="tutorial">
-                    <img src="./images/tutorial.png" />
+                    <img src="./images/tutorial.png" alt="image" />
                     <p>Tutorial</p>
                 </div>
                 <div id="singleplayer">
-                    <img src="./images/singleplayer.png" />
+                    <img src="./images/singleplayer.png" alt="image" />
                     <p>Single Player</p>
                 </div>
                 <div id="multiplayer">
-                    <img src="./images/multi.png" />
+                    <img src="./images/multi.png" alt="image" />
                     <p>Multi Player</p>
                 </div>
             </div>
@@ -51,20 +51,20 @@
     <section id="solo-option-page" class="hidden">
         <section id="solo-option-top">
             <div class="horizontal-container">
-                <img src="./images/singleplayer.png" />
+                <img src="./images/singleplayer.png" alt="image" />
                 <form id="solo-form">
                     <div class="options">
                         <div>
                             <span>Enter your name (12 characters max):</span>
-                            <input id="solo-name" type="text" value="G@m3rz" maxlength="12" required></input>
+                            <input id="solo-name" type="text" value="G@m3rz" maxlength="12" required>
                         </div>
                         <div>
                             <span>Enter the number of players (4 to 8 players):</span>
-                            <input id="solo-nb-players" type="number" value="7" min="4" max="8"></input>
+                            <input id="solo-nb-players" type="number" value="7" min="4" max="8">
                         </div>
                         <div>
                             <span>Show claims ?
-                            <input id="solo-claim" type="checkbox"></input>
+                            <input id="solo-claim" type="checkbox">
                         </span>
                         </div>
                     </div>
@@ -77,15 +77,15 @@
         <section>
             <div class="main-menu">
                 <div id="solo-easy">
-                    <img src="./images/easy.png" />
+                    <img src="./images/easy.png" alt="image" />
                     <p>Easy</p>
                 </div>
                 <div id="solo-normal">
-                    <img src="./images/normal.png" />
+                    <img src="./images/normal.png" alt="image" />
                     <p>Normal</p>
                 </div>
                 <div id="solo-hard">
-                    <img src="./images/hard.png" />
+                    <img src="./images/hard.png" alt="image" />
                     <p>Impossible</p>
                 </div>
             </div>
@@ -94,16 +94,16 @@
     <section id="multi-option-page" class="hidden">
         <section id="multi-option">
             <div class="horizontal-container">
-                <img src="./images/multi.png" />
+                <img src="./images/multi.png" alt="image" />
                 <form id="multi-form">
                     <div class="options">
                         <div>
                             <span>Enter the number of TOTAL players (4 to 8 players):</span>
-                            <input id="multi-nb-players" type="number" value="7" min="4" max="8"></input>
+                            <input id="multi-nb-players" type="number" value="7" min="4" max="8">
                         </div>
                         <div id="multi-input">
                             <span>Enter the number of human playing :</span>
-                            <input id="multi-nb-human" type="number" value="1" min="1" max="8"></input>
+                            <input id="multi-nb-human" type="number" value="1" min="1" max="8">
                         </div>
                         <div id="ia-lvl">
                             <p>Select the level of IA (if any)</p>
@@ -116,7 +116,7 @@
                         </div>
                         <div>
                             <span>Show claims ?
-                            <input id="multi-claim" type="checkbox"></input>
+                            <input id="multi-claim" type="checkbox">
                         </span>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
         <div class="main-menu">
             <div id="multi-start">
                 <p id="multi-start-txt">Begin Mission !</p>
-                <img src="./images/back-role.png" />
+                <img src="./images/back-role.png" alt="image" />
             </div>
         </div>
     </section>
@@ -141,12 +141,12 @@
             <div id="board-status">
                 <div>
                     <span>Wire Cut</span>
-                    <div id="nb-wire horizontal-container">
-                        <img src="./images/wire.png" alt="">
+                    <div id="nb-wire">
+                        <img src="./images/wire.png" alt="image">
                         <span id="nb-wire-span">42</span>
                     </div>
-                    <div id="nb-neutral horizontal-container">
-                        <img src="./images/neutral.png" alt="">
+                    <div id="nb-neutral">
+                        <img src="./images/neutral.png" alt="image">
                         <span id="nb-neutral-span">42</span>
                     </div>
                 </div>
@@ -176,10 +176,28 @@
             <p class="thanks-to">for making Big Ben explode !</p>
         </div>
         <div>
-            <button id="close-lose" class="close">Restart</button>
-            <button id="close-lose" class="close">Main Menu</button>
+            <button id="restart-lose" class="close">Restart</button>
+            <button id="main-Menu-lose" class="close">Main Menu</button>
             <button id="close-lose" class="close">Close</button>
         </div>
+    </div>
+    <div id="claim-popup" class="popup hidden">
+        <div>
+            <span>What is your Claim ?</span>
+        </div>
+        <div>
+            <form id="claim-form">
+                <p> Number of Wire : </p>
+                <input id="claim-wire" type="number" min="0" max="5">
+                <p> Claim Bomb </p>
+                <input id="claim-bomb" type="checkbox">
+            </form>
+        </div>
+        <div>
+            <button id="claim-set" class="close">Claim</button>
+            <button id="claim-close" class="close">Close</button>
+        </div>
+
     </div>
 
     <footer>
@@ -190,8 +208,7 @@
         </div>
         <div>
             <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf">
-                <img class="img-rules" src="./images/rules.PNG" />
-                <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf">Official Rules</a>
+                <img class="img-rules" src="./images/rules.PNG" alt="image" /> Official Rules</a>
         </div>
     </footer>
 </body>

@@ -15,13 +15,18 @@ const pages = [homePage, gamePage, soloOptPage, multiOptPage];
 
 const winPopup = document.getElementById("win-popup");
 const losePopup = document.getElementById("lose-popup");
+const claimPopup = document.getElementById("claim-popup");
 const winMsg = document.getElementById("win-msg");
 const loseMsg = document.getElementById("lose-msg");
 const winBtn = document.getElementById("close-win");
 const loseBtn = document.getElementById("close-lose");
+const claimBtn = document.getElementById("claim-set");
+const claimCloseBtn = document.getElementById("claim-close");
 
 winBtn.onclick = closePopup;
 loseBtn.onclick = closePopup;
+claimBtn.onclick = setClaim;
+claimCloseBtn.onclick = closePopup;
 
 const htmlTutorial = document.getElementById("tutorial");
 const htmlSingleplayer = document.getElementById("singleplayer");
@@ -51,6 +56,10 @@ const htmlSoloTxt = document.getElementById("option-txt");
 
 htmlMultiNbHuman.onchange = nbHumanChangeHandler;
 
+const htmlClaimForm = document.getElementById("claim-form");
+const htmlClaimWire = document.getElementById("claim-wire");
+const htmlClaimBomb = document.getElementById("claim-bomb");
+
 htmlMultiStart.onclick = multiClkHandler;
 htmlEasyDiv.onclick = soloClkHandler;
 htmlNormalDiv.onclick = soloClkHandler;
@@ -64,7 +73,7 @@ const htmlUsedCards = document.getElementById("used-cards");
 
 let htmlPlayers = document.querySelectorAll(".player");
 let htmlHands = document.querySelectorAll(".hand");
-//let htmlPlayerInfos = document.querySelectorAll(".infos");
+let htmlPlayerInfos = document.querySelectorAll(".infos");
 let htmlPlayerName = document.querySelectorAll(".name");
 let htmlPlayerWireBomb = document.querySelectorAll(".wire-bomb");
 let htmlCards = document.querySelectorAll(".card");
@@ -90,10 +99,13 @@ let rolescard = [true, true, true, false, false]; //3 blue, 2 red
 let playerNames = [];
 let isClaim = true;
 let iALvlstr = "Easy";
+let playerClaim;
 
 //#endregion
 
-
+function setClaim() {
+    playerClaim.innerText = `Wires: ${htmlClaimWire.value} - Bomb: ${htmlClaimBomb.checked ? "YES" : "NO"}`;
+}
 
 function returnCard(card) {
     htmlCards = document.querySelectorAll(".card"); //update the card
@@ -233,6 +245,7 @@ function multiplayerClkHandler() {
 function closePopup() {
     winPopup.classList.add("hidden");
     losePopup.classList.add("hidden");
+    claimPopup.classList.add("hidden");
 }
 
 function soloClkHandler() {
@@ -264,6 +277,14 @@ function normalOverHandler() {
 function hardOverHandler() {
     htmlSoloTxt.innerText = "HAAAAAAAAAAAAAARD";
     iALvlstr = "Hard";
+}
+
+function playerInfoClkHandler(event) {
+    if (isClaim) {
+        claimPopup.classList.remove("hidden");
+    }
+    playerClaim = event.target;
+    console.log(playerClaim);
 }
 
 //#endregion 
@@ -305,6 +326,7 @@ function init() {
     }
     htmlPlayers = document.querySelectorAll(".player");
 
+    //creating html template
     let i = 0;
     htmlPlayers.forEach(player => {
         let div = document.createElement("div");
@@ -317,6 +339,7 @@ function init() {
 
         h2 = document.createElement("h2");
         h2.classList.add("wire-bomb");
+        h2.classList.add("remove-events");
         div.appendChild(h2);
         player.appendChild(div);
 
@@ -327,9 +350,19 @@ function init() {
     });
 
     htmlHands = document.querySelectorAll(".hand");
-    //htmlPlayerInfos = document.querySelectorAll(".infos");
+    htmlPlayerInfos = document.querySelectorAll(".infos");
     htmlPlayerName = document.querySelectorAll(".name");
     htmlPlayerWireBomb = document.querySelectorAll(".wire-bomb");
+
+    //setting claims functionnality (adding handler only if player is human)
+    i = 0;
+    htmlPlayerInfos.forEach(playerinfo => {
+        if (!board.players[i].isIA) {
+            playerinfo.querySelector(".wire-bomb").classList.remove("remove-events");
+            playerinfo.querySelector(".wire-bomb").onclick = playerInfoClkHandler;
+        }
+        i++;
+    });
 
     //calculating number of card required and pushing them to the array
     board.cards.push(new Card("bomb"));
@@ -529,8 +562,9 @@ function giveCards(handsize) {
         //htmlPlayerInfos[k].innerText = `${board.players[k].name} Wire: ${board.players[k].hand.filter(card => card.isWire).length} - Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}`;
         htmlPlayerName[k].innerText = board.players[k].name;
 
+        let claimStr = board.players[k].isIA ? `Wire: ${board.players[k].hand.filter(card => card.isWire).length} ~ Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}` : "Claim ?";
         //if claims
-        htmlPlayerWireBomb[k].innerText = isClaim ? `Wire: ${board.players[k].hand.filter(card => card.isWire).length} ~ Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}` : "";
+        htmlPlayerWireBomb[k].innerText = isClaim ? claimStr : "";
 
         k++;
     });

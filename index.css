@@ -179,6 +179,7 @@ h2 {
 
 .remove-events {
     pointer-events: none;
+    border: none;
 }
 
 .img-rules {

@@ -101,6 +101,10 @@
     font-size: 1.3em;
 }
 
+.wire-bomb:hover {
+    border: 3px solid orange;
+}
+
 .current-player {
     border: 10px solid orange;
     animation: pulsate 2s ease-in-out infinite both;
