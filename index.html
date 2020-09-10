@@ -22,6 +22,8 @@
             <h1 id="title">Welcome To London Time Bomb !</h1>
         </div>
     </header>
+
+
     <section id="main-page">
         <section class="lore">
             <p>Moriarty has planted a bomb that he plans to detonate in the heart of Big Ben, while Sherlock rushes to defuse it. At the start of the game, you will secretly discover which team, Moriarty’s or Sherlock’s, you belong to and will try to identify
@@ -48,9 +50,11 @@
         </section>
     </section>
 
+
     <section id="solo-option-page" class="hidden">
         <section id="solo-option-top">
             <div class="horizontal-container">
+                <button class="menu-btn">Menu</button>
                 <img src="./images/singleplayer.png" alt="image" />
                 <form id="solo-form">
                     <div class="options">
@@ -72,7 +76,7 @@
             </div>
         </section>
         <section>
-            <p id="option-txt">toto</p>
+            <p id="option-txt">.</br>.</p>
         </section>
         <section>
             <div class="main-menu">
@@ -91,9 +95,12 @@
             </div>
         </section>
     </section>
+
+
     <section id="multi-option-page" class="hidden">
         <section id="multi-option">
             <div class="horizontal-container">
+                <button class="menu-btn">Menu</button>
                 <img src="./images/multi.png" alt="image" />
                 <form id="multi-form">
                     <div class="options">
@@ -130,9 +137,35 @@
             </div>
         </div>
     </section>
-    <section id="tutorial1-page" class="hidden"></section>
-    <section id="some-page" class="hidden"></section>
-    <section id="some-page" class="hidden"></section>
+
+
+    <section id="tutorial-page" class="hidden">
+        <section class="tutorial">
+            <section>
+                <div class="tuto-player">
+                    <div class="tuto-infos">
+                        <h2 class="tuto-name">You</h2>
+                        <h2 class="tuto-wire-bomb"></h2>
+                    </div>
+                    <div class="horizontal-container tuto-hand">
+                        <div class="tuto-card-role tuto-back-role tuto-red-role pulsate"></div>
+                        <div class="tuto-card-scissor hidden">
+                            <h3>Current Player</h3>
+                        </div>
+                        <div class="tuto-card neutral recto remove-events"></div>
+                        <div class="tuto-card neutral recto remove-events"></div>
+                        <div class="tuto-card neutral recto remove-events"></div>
+                        <div class="tuto-card neutral recto remove-events"></div>
+                        <div class="tuto-card neutral recto remove-events"></div>
+                    </div>
+                </div>
+            </section>
+            <section class="tutorial-txt">
+                Under construction...
+                <button class="menu-btn">Menu</button>
+            </section>
+        </section>
+    </section>
 
 
     <section id="game-page" class="hidden">
@@ -152,22 +185,36 @@
                 </div>
                 <!-- <div id="used-cards"></div> -->
                 <div class="buttons">
-                    <button id="shuffle-btn"> Shuffle </button>
-                    <button id="reset-btn"> Reset </button>
-                    <button id="restart-btn"> Restart </button>
-                    <button id="return-btn"> ReturnCard </button>
+                    <button id="shuffle-btn" class="hidden"> Shuffle </button>
+                    <button class="reset-btn"> Restart </button>
+                    <button class="menu-btn"> Menu </button>
+                    <button id="restart-btn"> Reload </button>
+                    <button id="return-btn" class="hidden"> ReturnCard </button>
                 </div>
             </div>
         </div>
     </section>
 
     <div id="win-popup" class="popup hidden">
-        <span id="win-msg">Sherlock's Team Win! </span>
-        <button id="close-win" class="close">Restart</button>
+        <div>
+            <span class="sherlock">Sherlock's Team Win!</span>
+        </div>
+        <div>
+            <p class="thanks-to"> Congratulation to : </p>
+            <p id="win-msg"></p>
+            <p> </p>
+            <p class="thanks-to">for saving Big Ben from explosion !</p>
+        </div>
+        <div class="popup-btn">
+            <button class="reset-btn">Restart</button>
+            <button id="main-Menu-win" class="menu-btn">Main Menu</button>
+            <button id="close-win" class="close">Close</button>
+        </div>
     </div>
+
     <div id="lose-popup" class="popup hidden">
         <div>
-            <span>Moriarty's Team Win!</span>
+            <span class="moriarty">Moriarty's Team Win!</span>
         </div>
         <div>
             <p class="thanks-to"> Congratulation to : </p>
@@ -175,12 +222,13 @@
             <p> </p>
             <p class="thanks-to">for making Big Ben explode !</p>
         </div>
-        <div>
-            <button id="restart-lose" class="close">Restart</button>
-            <button id="main-Menu-lose" class="close">Main Menu</button>
+        <div class="popup-btn">
+            <button class="reset-btn">Restart</button>
+            <button id="main-Menu-lose" class="menu-btn">Main Menu</button>
             <button id="close-lose" class="close">Close</button>
         </div>
     </div>
+
     <div id="claim-popup" class="popup hidden">
         <div>
             <span>What is your Claim ?</span>
@@ -188,7 +236,7 @@
         <div>
             <form id="claim-form">
                 <p> Number of Wire : </p>
-                <input id="claim-wire" type="number" min="0" max="5">
+                <input id="claim-wire" type="number" min="0" max="5" required>
                 <p> Claim Bomb </p>
                 <input id="claim-bomb" type="checkbox">
             </form>
@@ -197,7 +245,6 @@
             <button id="claim-set" class="close">Claim</button>
             <button id="claim-close" class="close">Close</button>
         </div>
-
     </div>
 
     <footer>
@@ -211,4 +258,5 @@
                 <img class="img-rules" src="./images/rules.PNG" alt="image" /> Official Rules</a>
         </div>
     </footer>
+
 </body>

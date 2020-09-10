@@ -10,8 +10,10 @@ const homePage = document.getElementById("main-page");
 const gamePage = document.getElementById("game-page");
 const soloOptPage = document.getElementById("solo-option-page");
 const multiOptPage = document.getElementById("multi-option-page");
+const tutorialPage = document.getElementById("tutorial-page");
 
-const pages = [homePage, gamePage, soloOptPage, multiOptPage];
+const pages = [homePage, gamePage, soloOptPage, multiOptPage, tutorialPage];
+const tutorialPages = [];
 
 const winPopup = document.getElementById("win-popup");
 const losePopup = document.getElementById("lose-popup");
@@ -84,14 +86,18 @@ let htmlNbNeutral = document.getElementById("nb-neutral-span");
 let htmlMultiHumanNames = document.querySelectorAll(".multi-name-player")
 
 const shuffleBtn = document.getElementById("shuffle-btn");
-const resetBtn = document.getElementById("reset-btn");
+const resetBtn = document.querySelectorAll(".reset-btn");
 const restartBtn = document.getElementById("restart-btn");
 const returnBtn = document.getElementById("return-btn");
+const menuBtn = document.querySelectorAll(".menu-btn");
 
 shuffleBtn.onclick = shuffleBtnClickHandler;
-resetBtn.onclick = resetBtnClickHandler;
+resetBtn.forEach(button => button.onclick = resetBtnClickHandler);
 restartBtn.onclick = () => document.location.reload(true);
 returnBtn.onclick = returnHandler;
+menuBtn.forEach(button => button.onclick = menuClkHAndler);
+
+document.querySelectorAll(".close").forEach(button => button.onclick = closePopup);
 
 let board;
 let nbplayer = 7;
@@ -101,10 +107,22 @@ let isClaim = true;
 let iALvlstr = "Easy";
 let playerClaim;
 
+const htmlTutoPlayers = document.querySelectorAll(".tuto-player");
+const htmlTutoHands = document.querySelectorAll(".tuto-hand");
+const htmlTutoPlayerInfos = document.querySelectorAll(".tuto-infos");
+const htmlTutoPlayerName = document.querySelectorAll(".tuto-name");
+const htmlTutoPlayerWireBomb = document.querySelectorAll(".tuto-wire-bomb");
+const htmlTutoCards = document.querySelectorAll(".tuto-card");
+const htmlTutoRoles = document.querySelectorAll(".tuto-card-role");
+const htmlTutoScissors = document.querySelectorAll(".tuto-card-scissor");
+
 //#endregion
 
 function setClaim() {
-    playerClaim.innerText = `Wires: ${htmlClaimWire.value} - Bomb: ${htmlClaimBomb.checked ? "YES" : "NO"}`;
+    if (htmlClaimForm.checkValidity()) {
+        playerClaim.innerText = `Wires: ${htmlClaimWire.value} - Bomb: ${htmlClaimBomb.checked ? "YES" : "NO"}`;
+        closePopup();
+    }
 }
 
 function returnCard(card) {
@@ -164,6 +182,11 @@ function returnCard(card) {
 }
 
 //#region handlers
+function menuClkHAndler() {
+    show(homePage);
+    closePopup();
+}
+
 function cardClickHandler(event) {
     returnCard(event.target);
 }
@@ -223,11 +246,14 @@ function resetBtnClickHandler() {
     });
 
     init();
+    closePopup();
 }
 
 function tutorialClkHandler() {
     console.log("tuto click");
     audio.play();
+    show(tutorialPage);
+    initTuto();
 }
 
 function singleplayerClkHandler() {
@@ -265,17 +291,17 @@ function multiClkHandler() {
 }
 
 function easyOverHandler() {
-    htmlSoloTxt.innerText = "EASYYYYYYYYY";
+    htmlSoloTxt.innerHTML = "EASY MODE: <br> The IA is counting on luck to win";
     iALvlstr = "Easy";
 }
 
 function normalOverHandler() {
-    htmlSoloTxt.innerText = "NOOOORRRRMMMAAAAAALLL";
+    htmlSoloTxt.innerHTML = "NORMAL MODE: <br> The IA is looking at your claims to win";
     iALvlstr = "Normal";
 }
 
 function hardOverHandler() {
-    htmlSoloTxt.innerText = "HAAAAAAAAAAAAAARD";
+    htmlSoloTxt.innerHTML = "HARD MODE: <br> The IA is optimised to win";
     iALvlstr = "Hard";
 }
 
@@ -646,10 +672,6 @@ function hidePlayerCards(event) {
     event.target.classList.add("back-role");
 
     playerCards.forEach(card => setHtmlCard(board.remainingCards[getIndexCards(card)], card));
-
-
-    //select all card, get index of card, set card
-
 }
 
 function showAllCards() {
@@ -659,3 +681,27 @@ function showAllCards() {
     htmlRoles.forEach(card => card.classList.remove("back-role"));
 }
 //#endregion
+
+
+function initTuto() {
+    htmlTutoRoles.forEach(htmlRole => {
+        htmlRole.onmousedown = showTutoPlayerCards;
+        htmlRole.onmouseup = hideTutoPlayerCards;
+        htmlRole.onmouseout = hideTutoPlayerCards;
+    });
+}
+
+function showTutoPlayerCards(event) {
+    let playerCards = event.target.parentElement.querySelectorAll(".tuto-card");
+    playerCards.forEach(card => card.classList.remove("recto"));
+    event.target.classList.remove("tuto-back-role");
+    console.log(event.target);
+    console.log(playerCards);
+}
+
+function hideTutoPlayerCards(event) {
+    let playerCards = event.target.parentElement.querySelectorAll(".tuto-card");
+    event.target.classList.add("tuto-back-role");
+
+    playerCards.forEach(card => card.classList.add("recto"));
+}
