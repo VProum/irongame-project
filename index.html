@@ -53,7 +53,7 @@
 
     <section id="solo-option-page" class="hidden">
         <section id="solo-option-top">
-            <div class="horizontal-container">
+            <div class="horizontal-container option-layout">
                 <button class="menu-btn">Menu</button>
                 <img src="./images/singleplayer.png" alt="image" />
                 <form id="solo-form">
@@ -68,7 +68,7 @@
                         </div>
                         <div>
                             <span>Show claims ?
-                            <input id="solo-claim" type="checkbox">
+                            <input id="solo-claim" type="checkbox" checked>
                         </span>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
 
     <section id="multi-option-page" class="hidden">
         <section id="multi-option">
-            <div class="horizontal-container">
+            <div class="horizontal-container option-layout">
                 <button class="menu-btn">Menu</button>
                 <img src="./images/multi.png" alt="image" />
                 <form id="multi-form">
@@ -123,7 +123,7 @@
                         </div>
                         <div>
                             <span>Show claims ?
-                            <input id="multi-claim" type="checkbox">
+                            <input id="multi-claim" type="checkbox" checked>
                         </span>
                         </div>
                     </div>
@@ -237,12 +237,12 @@
             <form id="claim-form">
                 <p> Number of Wire : </p>
                 <input id="claim-wire" type="number" min="0" max="5" required>
-                <p> Claim Bomb </p>
+                <p> Claim Bomb :</p>
                 <input id="claim-bomb" type="checkbox">
             </form>
         </div>
         <div>
-            <button id="claim-set" class="close">Claim</button>
+            <button id="claim-set">Claim</button>
             <button id="claim-close" class="close">Close</button>
         </div>
     </div>

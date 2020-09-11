@@ -3,14 +3,14 @@ import { Board, Card, Player } from "./js/classes.js"
 console.log("js loaded");
 
 const audioBackground = document.getElementById("audio");
-const audioVictory = new Audio("../sounds/victory.wav");
-const audioDefeat = new Audio("../sounds/naruto-sad.mp3");
-const audioBomb = new Audio("../sounds/explosion.mp3");
-const audioWire = new Audio("../sounds/grun_amp.wav");
-const audioWin = new Audio("../sounds/metal-slug_amp.wav");
-const audioSharingan = new Audio("../sounds/sharingan.wav");
-const audioShuffle = new Audio("../sounds/shuffle.mp3");
-const audioScissor = new Audio("../sounds/scissors.mp3");
+const audioVictory = new Audio("./sounds/victory.wav");
+const audioDefeat = new Audio("./sounds/naruto-sad.mp3");
+const audioBomb = new Audio("./sounds/explosion.mp3");
+const audioWire = new Audio("./sounds/grun_amp.wav");
+const audioWin = new Audio("./sounds/metal-slug_amp.wav");
+const audioSharingan = new Audio("./sounds/sharingan.wav");
+const audioShuffle = new Audio("./sounds/shuffle.mp3");
+const audioScissor = new Audio("./sounds/scissors.mp3");
 
 audioWin.onended = function() {
     audioVictory.play();
@@ -217,12 +217,10 @@ function cardClickHandler(event) {
 }
 
 function nbHumanChangeHandler(event) {
-    console.log(event);
 
     while (event.target.nextElementSibling) {
         event.target.nextElementSibling.remove();
     }
-
 
     let div = document.createElement("div");
     let span = document.createElement("span");
@@ -280,7 +278,6 @@ function resetBtnClickHandler() {
 }
 
 function tutorialClkHandler() {
-    console.log("tuto click");
     show(tutorialPage);
     initTuto();
     audioDefeat.pause();
@@ -352,7 +349,6 @@ function playerInfoClkHandler(event) {
         claimPopup.classList.remove("hidden");
     }
     playerClaim = event.target;
-    console.log(playerClaim);
 }
 
 //#endregion 
@@ -458,10 +454,8 @@ function init() {
     //init win/lose msg
     board.getBlueTeam().forEach(player => { winMsg.innerText += `${player.name}, ` });
     board.getRedTeam().forEach(player => { loseMsg.innerText += `${player.name}, ` });
-    console.log(loseMsg);
-    winMsg.innerText = winMsg.innerText.slice(0, -1);
-    loseMsg.innerText = loseMsg.innerText.slice(0, -1);
-    console.log(loseMsg.innerText.slice(0, -1));
+    winMsg.innerText = loseMsg.innerText.slice(0, -2);
+    loseMsg.innerText = loseMsg.innerText.slice(0, -2);
 
     console.log("don't look, you cheater!", board);
 }

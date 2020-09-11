@@ -8,7 +8,7 @@
 
 #board-status {
     width: 10%;
-    height: 100%;
+    height: 90vh;
     background: rgba(119, 136, 153, 0.8);
     display: flex;
     flex-direction: column;
@@ -49,11 +49,13 @@
     display: flex;
     justify-content: space-between;
     padding: 0 15px;
+    border-radius: 10px 10px 0px 0px;
 }
 
 .hand,
 .tuto-hand {
     background: rgba(119, 136, 153, 0.8);
+    border-radius: 0px 0px 10px 10px;
 }
 
 .card,

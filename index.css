@@ -126,9 +126,9 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 4em;
-    background-color: rgba(255, 255, 255, 0.9);
+    background: rgba(142, 159, 177, 0.95);
     z-index: 10;
-    text-shadow: 2px 2px 5px red;
+    text-shadow: 2px 2px 5px orange;
 }
 
 #lose-popup {
@@ -136,6 +136,24 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+#win-popup {
+    border: 5px solid blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#claim-popup {
+    border: 5px solid orange;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#claim-popup input {
+    font-size: 1em;
 }
 
 .thanks-to {
@@ -151,6 +169,12 @@ button {
 
 #win-msg {
     text-shadow: 2px 2px 5px blue;
+    font-size: 2rem;
+    padding-bottom: 25px;
+}
+
+#claim-form {
+    text-shadow: 2px 2px 5px orange;
     font-size: 2rem;
     padding-bottom: 25px;
 }
@@ -183,6 +207,11 @@ h2 {
     text-shadow: 1px 1px 2px black, 0 0 25px black;
     font-size: 1.8rem;
     display: inline-block;
+}
+
+.option-layout {
+    justify-content: space-between;
+    padding-right: 20px;
 }
 
 .options {
