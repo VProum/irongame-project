@@ -626,7 +626,7 @@ function giveCards(handsize) {
         //htmlPlayerInfos[k].innerText = `${board.players[k].name} Wire: ${board.players[k].hand.filter(card => card.isWire).length} - Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}`;
         htmlPlayerName[k].innerText = board.players[k].name;
 
-        let claimStr = board.players[k].isIA ? `Wire: ${board.players[k].hand.filter(card => card.isWire).length} ~ Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}` : "Claim ?";
+        let claimStr = board.players[k].isIA ? `Diffuse: ${board.players[k].hand.filter(card => card.isWire).length} ~ Bomb: ${board.players[k].hand.filter(card => card.isBomb).length === 1 ? "YES" : "NO"}` : "Claim ?";
         //if claims
         htmlPlayerWireBomb[k].innerText = isClaim ? claimStr : "";
 
@@ -653,7 +653,7 @@ function displayStatus() {
 
         let roundStr = board.round === 3 ? "LAST ROUND !" : "Round " + (board.round + 1);
         let turnStr = (nbplayer - board.turn) === 1 ? "LAST CUT !" : "Cuts left before next round : " + (nbplayer - board.turn);
-        htmlTitle.innerText = `${roundStr} //  ${turnStr} // Wires left : ${nbplayer - board.nbWire()}`; //todo update wire
+        htmlTitle.innerText = `${roundStr} //  ${turnStr} // Diffuses left : ${nbplayer - board.nbWire()}`; //todo update wire
 
         htmlNbWire.innerText = "X" + board.nbWire();
         htmlNbNeutral.innerText = "X" + board.nbNeutral();
