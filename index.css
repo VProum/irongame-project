@@ -1,6 +1,7 @@
 div {
     /*border: 1px solid magenta;
-    background: rgba(255, 255, 255, 0.1);*/
+    background: rgba(255, 255, 255, 0.1);
+    */
     border-radius: 10px;
 }
 
@@ -79,6 +80,14 @@ header {
     align-items: center;
 }
 
+.tutorial-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    color: whitesmoke
+}
+
 .main-page {
     margin-top: 200px;
 }
@@ -90,7 +99,13 @@ header {
 }
 
 .lore>p {
+    color: whitesmoke;
+    text-shadow: 4px 4px 10px orange;
     padding: 20px 150px
+}
+
+.lore>h2 {
+    text-shadow: 4px 4px 10px black;
 }
 
 button {
@@ -111,11 +126,11 @@ button {
 }
 
 .sherlock {
-    text-shadow: 2px 2px 5px blue;
+    text-shadow: 2px 2px 5px blue !important;
 }
 
 .moriarty {
-    text-shadow: 2px 2px 5px red;
+    text-shadow: 2px 2px 5px red !important;
 }
 
 .popup {

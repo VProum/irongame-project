@@ -141,7 +141,7 @@
 
     <section id="tutorial-page" class="hidden">
         <section class="tutorial">
-            <section>
+            <section class="hidden">
                 <div class="tuto-player">
                     <div class="tuto-infos">
                         <h2 class="tuto-name">You</h2>
@@ -161,8 +161,74 @@
                 </div>
             </section>
             <section class="tutorial-txt">
-                Under construction...
                 <button class="menu-btn">Menu</button>
+                <h2>Rules in a nutshell...</h2>
+                <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf" target="_blank">
+                    <button> Official Rules</button></a>
+            </section>
+            <section class="tutorial-info lore">
+                <h2>Roles cards</h2>
+                <div class="horizontal-container">
+                    <div class="tuto-back-role">Back</div>
+                    <div class="red-role">Red</div>
+                    <div class="blue-role">Blue</div>
+                </div>
+                <p>There is two team,<span class="sherlock"> Sherlock's Team (Blue)</span> and <span class="moriarty">Moriarty Team (Red)</span></br>
+                    You don't know what is the role of the other players !</p>
+
+
+                <h2>The cards</h2>
+                <div class="horizontal-container">
+                    <div class="bomb tuto-card">bomb</div>
+                    <div class="wire tuto-card">wire</div>
+                    <div class="neutral tuto-card">neutral</div>
+                    <div class="recto tuto-card">back</div>
+                </div>
+                <p>Aside from the roles cards, there is 3 different type of card : </br>
+                    <span class="moriarty"> The bomb</span> , <span class="sherlock">The Wire </span> and the neutral cards</p>
+
+
+                <h2 class="moriarty">How to play red</h2>
+                <div class="horizontal-container">
+                    <div class="red-role tuto-card">Red</div>
+                    <div>
+                        <p class="moriarty">
+                            If you are RED, you have to find the card bomb, there is only one! </br>
+                            Try not to reveal yourself as a red member as you are outnumbered!
+                        </p>
+                    </div>
+                    <div class="bomb tuto-card">Red</div>
+                </div>
+
+                <h2 class="sherlock">How to play blue</h2>
+                <div class="horizontal-container">
+                    <div class="blue-role tuto-card">Blue</div>
+                    <div>
+                        <p class="sherlock">
+                            If you are Blue, you have to find ALL the wire, there are several in total </br>
+                            there is as much wire as there is players (ie, there is 7 wire if you are 7 in total)
+                        </p>
+                    </div>
+                    <div class="wire tuto-card">Blue</div>
+                </div>
+
+                <h2>Overview of a turn</h2>
+                <div class="card-scissor-tuto">current player</div>
+                <p>There is only one scissor to cut the wire!</br>
+                    The player holding the scissor represent the current player</br>
+                    He can cut any wire in front of the other player, but he cannot cut his own wire</br>
+                    Once a card is cut, it is reveal to all player and remove from the game</br>
+                    <span class="sherlock">Try looking at the claims of the other player to know if they have the bomb or any good wire</span></br>
+                    <span class="moriarty">But be careful, people can bluff and lie about their claims!</span></p>
+
+                <h2>Overview of a round</h2>
+                <p>After a certain number of turn (equal to the number of player) it is the end of the round</br>
+                    At the end of a round, all the remaining card are suffled and dealt again</br>
+                    In that way, every player can begin <span class="sherlock">their claims </span> <span class="moriarty"> (and bluff)</span> each round!</p>
+
+                <h2>TL : DR,</h2>
+                <p class="moriarty">Reds win if the bomb is found</p>
+                <p class="sherlock">Blues win if the all the diffuses are found</p>
             </section>
         </section>
     </section>
@@ -254,7 +320,7 @@
             <audio id="audio" src="./sounds/sherlocks-theme.mp3" controls loop></audio>
         </div>
         <div>
-            <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf">
+            <a href="https://cdn.1j1ju.com/medias/ff/29/72-time-bomb-rulebook.pdf" target="_blank">
                 <img class="img-rules" src="./images/rules.PNG" alt="image" /> Official Rules</a>
         </div>
     </footer>
