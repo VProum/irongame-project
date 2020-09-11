@@ -2,7 +2,20 @@ import { Board, Card, Player } from "./js/classes.js"
 
 console.log("js loaded");
 
-const audio = document.getElementById("audio");
+const audioBackground = document.getElementById("audio");
+const audioVictory = new Audio("../sounds/victory.wav");
+const audioDefeat = new Audio("../sounds/naruto-sad.mp3");
+const audioBomb = new Audio("../sounds/explosion.mp3");
+const audioWire = new Audio("../sounds/grun_amp.wav");
+const audioWin = new Audio("../sounds/metal-slug_amp.wav");
+const audioSharingan = new Audio("../sounds/sharingan.wav");
+const audioShuffle = new Audio("../sounds/shuffle.mp3");
+const audioScissor = new Audio("../sounds/scissors.mp3");
+
+audioWin.onended = function() {
+    audioVictory.play();
+};
+
 
 //#region declaration of variables && eventlistener
 const htmlTitle = document.getElementById("title");
@@ -131,6 +144,9 @@ function returnCard(card) {
 
     flipCard(card);
     setCard(card, board.remainingCards[getIndexCards(card)]);
+    //sound if wire
+    if (board.remainingCards[getIndexCards(card)].isWire) audioWire.play();
+    else audioScissor.play();
 
     board.usedCards.push(board.remainingCards[getIndexCards(card)]);
     board.usedCards = [...new Set(board.usedCards)]; //dont add if the card is already there
@@ -166,17 +182,26 @@ function returnCard(card) {
     console.log("don't look, you cheater!", board);
 
     setTimeout(() => {
-        if (board.isGameOver() === -1) {
+        if (board.isGameOver() === -1) { //red wins
             losePopup.classList.remove("hidden");
             showAllCards();
+            audioBomb.play();
+            audioDefeat.play();
+            audioBackground.pause();
+            audioBackground.currentTime = 0;
+
         } else if (board.isGameOver() === 1) {
             winPopup.classList.remove("hidden");
             showAllCards();
+            audioWin.play();
+            audioBackground.pause();
+            audioBackground.currentTime = 0;
+
         } else if (board.activeplayer.isIA) {
             setTimeout(() => {
                 console.log("ia playing");
                 returnCard(htmlCards[board.playEasy()]);
-            }, 800);
+            }, 1000);
         }
     }, 550);
 }
@@ -247,25 +272,42 @@ function resetBtnClickHandler() {
 
     init();
     closePopup();
+    audioDefeat.pause();
+    audioVictory.pause();
+    audioDefeat.currentTime = 0;
+    audioVictory.currentTime = 0;
+    audioBackground.play();
 }
 
 function tutorialClkHandler() {
     console.log("tuto click");
-    audio.play();
     show(tutorialPage);
     initTuto();
+    audioDefeat.pause();
+    audioVictory.pause();
+    audioDefeat.currentTime = 0;
+    audioVictory.currentTime = 0;
+    audioBackground.play();
 }
 
 function singleplayerClkHandler() {
     show(soloOptPage);
     htmlTitle.innerText = "Single Player";
-    audio.play();
+    audioDefeat.pause();
+    audioVictory.pause();
+    audioDefeat.currentTime = 0;
+    audioVictory.currentTime = 0;
+    audioBackground.play();
 }
 
 function multiplayerClkHandler() {
     htmlTitle.innerText = "Local Multi Player";
     show(multiOptPage);
-    audio.play();
+    audioDefeat.pause();
+    audioVictory.pause();
+    audioDefeat.currentTime = 0;
+    audioVictory.currentTime = 0;
+    audioBackground.play();
 }
 
 function closePopup() {
@@ -334,6 +376,7 @@ function init() {
     rolescard = board.shuffle(rolescard);
     let isIa = false;
     let j = 1;
+    board.players = [];
     //adding html players and hand
     for (let i = 0; i < nbplayer; i++) {
         //adding players to board
@@ -342,7 +385,6 @@ function init() {
             newplayer.name = `${iALvlstr} IA ${j}`;
             j++;
         }
-
         board.players.push(newplayer);
 
         const div = document.createElement("div");
@@ -572,6 +614,8 @@ function giveCards(handsize) {
     let j = 0; //index of remainingcards
     let k = 0; //index of board.players
 
+    audioShuffle.play();
+
     htmlHands.forEach(player => {
         createHtmlRoles(k, rolescard, player);
         createHtmlScissor(player);
@@ -664,6 +708,7 @@ function showPlayerCards(event) {
     let playerCards = event.target.parentElement.querySelectorAll(".card");
     playerCards.forEach(card => card.classList.remove("recto"));
     event.target.classList.remove("back-role");
+    audioSharingan.play();
 }
 
 function hidePlayerCards(event) {
